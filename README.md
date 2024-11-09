@@ -88,33 +88,248 @@ The **companydata** Data Layer provides methods to interact with the underlying 
 
 ### Methods
 
+All methods in the Data Layer throw an exception if there is an error, such as the requested object not existing.
+
 #### Company Operations
-- `int deleteCompany(String companyName)`
+
+- **`int deleteCompany(String companyName)`**
+
+  Deletes all Departments, Employees, and Timecards associated with the specified company.
+
+  **Parameters:**
+  - `companyName` (`String`): The name of the company to delete.
+
+  **Returns:**
+  - `int`: The number of rows deleted.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the company does not exist.
 
 #### Department Operations
-- `Department insertDepartment(Department department)`
-- `List<Department> getAllDepartment(String companyName)`
-- `Department getDepartment(String companyName, int dept_id)`
-- `Department getDepartmentNo(String companyName, String dept_no)`
-- `Department updateDepartment(Department department)`
-- `int deleteDepartment(String company, int dept_id)`
+
+- **`Department insertDepartment(Department department)`**
+
+  Inserts a new Department into the database.
+
+  **Parameters:**
+  - `department` (`Department`): The Department object to insert.
+
+  **Returns:**
+  - `Department`: The inserted Department object, potentially with an updated ID.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the department data is invalid.
+
+- **`List<Department> getAllDepartment(String companyName)`**
+
+  Retrieves all Departments for the specified company.
+
+  **Parameters:**
+  - `companyName` (`String`): The name of the company whose departments are to be retrieved.
+
+  **Returns:**
+  - `List<Department>`: A list of Department objects.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the company does not exist.
+
+- **`Department getDepartment(String companyName, int dept_id)`**
+
+  Retrieves a specific Department by its ID for the given company.
+
+  **Parameters:**
+  - `companyName` (`String`): The name of the company.
+  - `dept_id` (`int`): The ID of the department to retrieve.
+
+  **Returns:**
+  - `Department`: The requested Department object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the department does not exist.
+
+- **`Department getDepartmentNo(String companyName, String dept_no)`**
+
+  Retrieves a specific Department by its number for the given company.
+
+  **Parameters:**
+  - `companyName` (`String`): The name of the company.
+  - `dept_no` (`String`): The number of the department to retrieve.
+
+  **Returns:**
+  - `Department`: The requested Department object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the department does not exist.
+
+- **`Department updateDepartment(Department department)`**
+
+  Updates an existing Department's information.
+
+  **Parameters:**
+  - `department` (`Department`): The Department object containing updated information.
+
+  **Returns:**
+  - `Department`: The updated Department object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the department does not exist.
+
+- **`int deleteDepartment(String company, int dept_id)`**
+
+  Deletes a specific Department for the given company.
+
+  **Parameters:**
+  - `company` (`String`): The name of the company.
+  - `dept_id` (`int`): The ID of the department to delete.
+
+  **Returns:**
+  - `int`: The number of rows deleted.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the department does not exist.
 
 #### Employee Operations
-- `Employee insertEmployee(Employee employee)`
-- `List<Employee> getAllEmployee(String companyName)`
-- `Employee getEmployee(int emp_id)`
-- `Employee updateEmployee(Employee employee)`
-- `int deleteEmployee(int emp_id)`
+
+- **`Employee insertEmployee(Employee employee)`**
+
+  Inserts a new Employee into the database.
+
+  **Parameters:**
+  - `employee` (`Employee`): The Employee object to insert.
+
+  **Returns:**
+  - `Employee`: The inserted Employee object, potentially with an updated ID.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the employee data is invalid.
+
+- **`List<Employee> getAllEmployee(String companyName)`**
+
+  Retrieves all Employees for the specified company.
+
+  **Parameters:**
+  - `companyName` (`String`): The name of the company whose employees are to be retrieved.
+
+  **Returns:**
+  - `List<Employee>`: A list of Employee objects.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the company does not exist.
+
+- **`Employee getEmployee(int emp_id)`**
+
+  Retrieves a specific Employee by their ID.
+
+  **Parameters:**
+  - `emp_id` (`int`): The ID of the employee to retrieve.
+
+  **Returns:**
+  - `Employee`: The requested Employee object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the employee does not exist.
+
+- **`Employee updateEmployee(Employee employee)`**
+
+  Updates an existing Employee's information.
+
+  **Parameters:**
+  - `employee` (`Employee`): The Employee object containing updated information.
+
+  **Returns:**
+  - `Employee`: The updated Employee object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the employee does not exist.
+
+- **`int deleteEmployee(int emp_id)`**
+
+  Deletes a specific Employee.
+
+  **Parameters:**
+  - `emp_id` (`int`): The ID of the employee to delete.
+
+  **Returns:**
+  - `int`: The number of rows deleted.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the employee does not exist.
 
 #### Timecard Operations
-- `Timecard insertTimecard(Timecard timecard)`
-- `List<Timecard> getAllTimecard(int emp_id)`
-- `Timecard getTimecard(int timecard_id)`
-- `Timecard updateTimecard(Timecard timecard)`
-- `int deleteTimecard(int timecard_id)`
+
+- **`Timecard insertTimecard(Timecard timecard)`**
+
+  Inserts a new Timecard into the database.
+
+  **Parameters:**
+  - `timecard` (`Timecard`): The Timecard object to insert.
+
+  **Returns:**
+  - `Timecard`: The inserted Timecard object, potentially with an updated ID.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the timecard data is invalid.
+
+- **`List<Timecard> getAllTimecard(int emp_id)`**
+
+  Retrieves all Timecards for a specific Employee.
+
+  **Parameters:**
+  - `emp_id` (`int`): The ID of the employee whose timecards are to be retrieved.
+
+  **Returns:**
+  - `List<Timecard>`: A list of Timecard objects.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the employee does not exist.
+
+- **`Timecard getTimecard(int timecard_id)`**
+
+  Retrieves a specific Timecard by its ID.
+
+  **Parameters:**
+  - `timecard_id` (`int`): The ID of the timecard to retrieve.
+
+  **Returns:**
+  - `Timecard`: The requested Timecard object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the timecard does not exist.
+
+- **`Timecard updateTimecard(Timecard timecard)`**
+
+  Updates an existing Timecard's information.
+
+  **Parameters:**
+  - `timecard` (`Timecard`): The Timecard object containing updated information.
+
+  **Returns:**
+  - `Timecard`: The updated Timecard object.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the timecard does not exist.
+
+- **`int deleteTimecard(int timecard_id)`**
+
+  Deletes a specific Timecard.
+
+  **Parameters:**
+  - `timecard_id` (`int`): The ID of the timecard to delete.
+
+  **Returns:**
+  - `int`: The number of rows deleted.
+
+  **Throws:**
+  - `Exception`: If an error occurs or the timecard does not exist.
 
 #### Connection Management
-- `void close()`
+
+- **`void close()`**
+
+  Closes the current data layer connection.
+
+  **Throws:**
+  - `Exception`: If an error occurs while closing the connection.
 
 ### Usage Example
 
