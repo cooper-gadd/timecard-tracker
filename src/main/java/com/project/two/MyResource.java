@@ -3,6 +3,8 @@ package com.project.two;
 import com.project.two.business.BusinessLayer;
 import companydata.Department;
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -16,6 +18,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -151,6 +154,36 @@ public class MyResource {
       job.add("success", true);
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
+  @Path("departments")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDepartments(@QueryParam("company") String company) {
+    BusinessLayer bl = new BusinessLayer();
+    try {
+      List<Department> departments = bl.getAllDepartments(company);
+      JsonArrayBuilder jab = Json.createArrayBuilder();
+      for (Department dept : departments) {
+        JsonObjectBuilder deptJson = Json.createObjectBuilder()
+          .add("dept_id", dept.getId())
+          .add("company", dept.getCompany())
+          .add("dept_name", dept.getDeptName())
+          .add("dept_no", dept.getDeptNo())
+          .add("location", dept.getLocation());
+        jab.add(deptJson);
+      }
+      JsonArray departmentsArray = jab.build();
+      return Response.status(Response.Status.OK)
+        .entity(departmentsArray)
+        .build();
+    } catch (Exception e) {
+      JsonObjectBuilder job = Json.createObjectBuilder();
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())
