@@ -1,6 +1,7 @@
 package com.project.two;
 
 import com.project.two.business.BusinessLayer;
+import companydata.Department;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -41,6 +43,33 @@ public class MyResource {
     try {
       bl.deleteCompany(companyName);
       job.add("success", true);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
+  @Path("department")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getDepartment(
+    @QueryParam("company") String company,
+    @QueryParam("dept_id") int dept_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      Department dept = bl.getDepartment(company, dept_id);
+      JsonObjectBuilder deptJson = Json.createObjectBuilder()
+        .add("dept_id", dept.getId())
+        .add("company", dept.getCompany())
+        .add("dept_name", dept.getDeptName())
+        .add("dept_no", dept.getDeptNo())
+        .add("location", dept.getLocation());
+      job.add("department", deptJson);
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());

@@ -19,6 +19,15 @@ public class BusinessLayer {
     }
   }
 
+  public Department getDepartment(String company, int id) {
+    try {
+      return dl.getDepartment(company, id);
+    } catch (Exception e) {
+      System.out.println("Error in getDepartment: " + e.getMessage());
+    }
+    return null;
+  }
+
   public void insertDepartment(
     String company,
     String deptName,
