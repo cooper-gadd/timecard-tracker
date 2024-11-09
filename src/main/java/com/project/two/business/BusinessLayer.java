@@ -57,4 +57,12 @@ public class BusinessLayer {
     }
     return null;
   }
+
+  public void deleteDepartment(String company, int id) {
+    try {
+      dl.deleteDepartment(company, id);
+    } catch (Exception e) {
+      System.out.println("Error in deleteDepartment: " + e.getMessage());
+    }
+  }
 }

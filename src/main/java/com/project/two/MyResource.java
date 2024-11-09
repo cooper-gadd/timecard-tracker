@@ -136,4 +136,25 @@ public class MyResource {
         .build();
     }
   }
+
+  @DELETE
+  @Path("department")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response deleteDepartment(
+    @QueryParam("company") String company,
+    @QueryParam("dept_id") int dept_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      bl.deleteDepartment(company, dept_id);
+      job.add("success", true);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
 }
