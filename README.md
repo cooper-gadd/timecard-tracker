@@ -10,6 +10,7 @@
     - [Base URL Example](#base-url-example)
 4. [Data Layer Documentation](#data-layer-documentation)
     - [Description](#description-1)
+    - [Models](#models)
     - [Methods](#methods)
         - [Company Operations](#company-operations)
         - [Department Operations](#department-operations)
@@ -85,6 +86,52 @@ http://localhost:8080/FrenchBP2/webapi/CompanyServices/
 ### Description
 
 The **companydata** Data Layer provides methods to interact with the underlying database, handling CRUD operations for companies, departments, employees, and timecards. It ensures database constraints are respected and manages connections efficiently.
+
+### Models
+
+The Data Layer includes the following model classes, each equipped with multiple constructors to facilitate various initialization scenarios.
+
+#### Employee
+
+- `Employee(String emp_name, String emp_no, Date hire_date, String job, Double salary, int dept_id, int mng_id)`
+
+  Creates a new `Employee` instance without specifying an `emp_id`.
+
+- `Employee(int emp_id, String emp_name, String emp_no, Date hire_date, String job, Double salary, int dept_id, int mng_id)`
+
+  Creates a new `Employee` instance with a specified `emp_id`.
+
+#### Department
+
+- `Department(String company, String dept_name, String dept_no, String location)`
+
+  Creates a new `Department` instance with all primary attributes.
+
+- `Department(int dept_id, String company, String dept_name, String dept_no, String location)`
+
+  Creates a new `Department` instance with a specified `dept_id`.
+
+- `Department(String company, int dept_id)`
+
+  Creates a `Department` instance by specifying only the company and department ID.
+
+- `Department()`
+
+  Creates a `Department` instance with default values (no-argument constructor).
+
+#### Timecard
+
+- `Timecard(Timestamp start_time, Timestamp end_time, int emp_id)`
+
+  Creates a new `Timecard` instance without specifying a `timecard_id`.
+
+- `Timecard(int timecard_id, Timestamp start_time, Timestamp end_time, int emp_id)`
+
+  Creates a new `Timecard` instance with a specified `timecard_id`.
+
+- `Timecard()`
+
+  Creates a `Timecard` instance with default values (no-argument constructor).
 
 ### Methods
 
