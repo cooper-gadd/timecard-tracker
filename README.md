@@ -10,6 +10,7 @@
     - [Base URL Example](#base-url-example)
 4. [Data Layer Documentation](#data-layer-documentation)
     - [Description](#description-1)
+    - [Table Structure](#table-structure)
     - [Models](#models)
     - [Methods](#methods)
         - [Company Operations](#company-operations)
@@ -87,9 +88,26 @@ http://localhost:8080/FrenchBP2/webapi/CompanyServices/
 
 The **companydata** Data Layer provides methods to interact with the underlying database, handling CRUD operations for companies, departments, employees, and timecards. It ensures database constraints are respected and manages connections efficiently.
 
+### Table Structure
+
+The employee table has two foreign keys:
+1. `mng_id` references `employee.emp_id`
+2. `dept_id` references `department.dept_id`
+
+The employee table has an additional unique index on `emp_no` besides the primary key.
+
+The timecard table has one foreign key:
+1. `emp_id` references `employee.emp_id`
+
+The department table has one additional unique index on `dept_no` besides the primary key.
+
+![ER Diagram](./diagrams/er.png)
+
 ### Models
 
 The Data Layer includes the following model classes, each equipped with multiple constructors to facilitate various initialization scenarios.
+
+![Class Diagram](./diagrams/class.png)
 
 #### Employee
 
