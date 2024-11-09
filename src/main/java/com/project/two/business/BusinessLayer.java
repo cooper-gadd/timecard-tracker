@@ -1,5 +1,3 @@
 package com.project.two.business;
 
-public class BusinessLayer {
-    
-}
+public class BusinessLayer {}
