@@ -1,6 +1,7 @@
 package com.project.two.business;
 
 import companydata.DataLayer;
+import companydata.Department;
 
 public class BusinessLayer {
 
@@ -15,6 +16,19 @@ public class BusinessLayer {
       dl.deleteCompany(companyName);
     } catch (Exception e) {
       System.out.println("Error in deleteCompany: " + e.getMessage());
+    }
+  }
+
+  public void insertDepartment(
+    String company,
+    String deptName,
+    String deptNo,
+    String location
+  ) {
+    try {
+      dl.insertDepartment(new Department(company, deptName, deptNo, location));
+    } catch (Exception e) {
+      System.out.println("Error in insertDepartment: " + e.getMessage());
     }
   }
 }
