@@ -148,13 +148,14 @@ paths:
   /company:
     delete:
       summary: Delete Company Data
+      description: Deletes all Department, Employee, and Timecard records for the given company.
       parameters:
         - in: query
           name: company
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: RIT user ID as company name (e.g., company=companyName)
       responses:
         '200':
           description: Company data deleted successfully
@@ -165,8 +166,9 @@ paths:
                 properties:
                   success:
                     type: string
+                    example: "companyName's information deleted."
         '400':
-          description: Error message
+          description: Error occurred while deleting company data
           content:
             application/json:
               schema:
@@ -174,6 +176,7 @@ paths:
   /department:
     get:
       summary: Get Department by ID
+      description: Returns the requested Department as a JSON object.
       parameters:
         - in: query
           name: company
@@ -189,19 +192,22 @@ paths:
           description: Department record ID
       responses:
         '200':
-          description: Department details
+          description: Department details retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Department'
+                oneOf:
+                  - $ref: '#/components/schemas/Department'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while retrieving department
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
       summary: Create a New Department
+      description: Creates a new Department record.
       requestBody:
         required: true
         content:
@@ -214,15 +220,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessDepartment'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessDepartment'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while creating department
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
       summary: Update an Existing Department
+      description: Updates an existing Department record.
       requestBody:
         required: true
         content:
@@ -235,15 +244,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessDepartment'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessDepartment'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while updating department
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
       summary: Delete a Department
+      description: Deletes a specific Department record.
       parameters:
         - in: query
           name: company
@@ -265,14 +277,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessMessage'
         '400':
-          description: Error message
+          description: Error occurred while deleting department
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /employees:
+  /departments:
     get:
-      summary: Get All Employees for a Company
+      summary: Get All Departments for a Company
+      description: Returns a list of all Departments for the specified company.
       parameters:
         - in: query
           name: company
@@ -282,15 +295,45 @@ paths:
           description: RIT user ID as company name
       responses:
         '200':
-          description: List of Employees
+          description: List of Departments retrieved successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Employee'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Department'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while retrieving departments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /employees:
+    get:
+      summary: Get All Employees for a Company
+      description: Returns a list of all Employees for the specified company.
+      parameters:
+        - in: query
+          name: company
+          required: true
+          schema:
+            type: string
+          description: RIT user ID as company name
+      responses:
+        '200':
+          description: List of Employees retrieved successfully
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Employee'
+                  - $ref: '#/components/schemas/Error'
+        '400':
+          description: Error occurred while retrieving employees
           content:
             application/json:
               schema:
@@ -298,6 +341,7 @@ paths:
   /employee:
     get:
       summary: Get Employee by ID
+      description: Returns the requested Employee as a JSON object.
       parameters:
         - in: query
           name: company
@@ -313,19 +357,22 @@ paths:
           description: Employee record ID
       responses:
         '200':
-          description: Employee details
+          description: Employee details retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Employee'
+                oneOf:
+                  - $ref: '#/components/schemas/Employee'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while retrieving employee
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
       summary: Create a New Employee
+      description: Creates a new Employee record.
       requestBody:
         required: true
         content:
@@ -338,15 +385,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessEmployee'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessEmployee'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while creating employee
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
       summary: Update an Existing Employee
+      description: Updates an existing Employee record.
       requestBody:
         required: true
         content:
@@ -359,15 +409,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessEmployee'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessEmployee'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while updating employee
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
       summary: Delete an Employee
+      description: Deletes a specific Employee record.
       parameters:
         - in: query
           name: company
@@ -389,7 +442,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessMessage'
         '400':
-          description: Error message
+          description: Error occurred while deleting employee
           content:
             application/json:
               schema:
@@ -397,6 +450,7 @@ paths:
   /timecard:
     get:
       summary: Get Timecard by ID
+      description: Returns the requested Timecard as a JSON object.
       parameters:
         - in: query
           name: company
@@ -412,19 +466,22 @@ paths:
           description: Timecard record ID
       responses:
         '200':
-          description: Timecard details
+          description: Timecard details retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Timecard'
+                oneOf:
+                  - $ref: '#/components/schemas/TimecardOutput'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while retrieving timecard
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
       summary: Create a New Timecard
+      description: Creates a new Timecard record.
       requestBody:
         required: true
         content:
@@ -437,15 +494,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessTimecard'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessTimecard'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while creating timecard
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     put:
       summary: Update an Existing Timecard
+      description: Updates an existing Timecard record.
       requestBody:
         required: true
         content:
@@ -458,15 +518,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessTimecard'
+                oneOf:
+                  - $ref: '#/components/schemas/SuccessTimecard'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while updating timecard
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
       summary: Delete a Timecard
+      description: Deletes a specific Timecard record.
       parameters:
         - in: query
           name: company
@@ -488,7 +551,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SuccessMessage'
         '400':
-          description: Error message
+          description: Error occurred while deleting timecard
           content:
             application/json:
               schema:
@@ -496,6 +559,7 @@ paths:
   /timecards:
     get:
       summary: Get All Timecards for an Employee
+      description: Returns a list of all Timecards for the specified employee.
       parameters:
         - in: query
           name: company
@@ -511,15 +575,17 @@ paths:
           description: Employee record ID
       responses:
         '200':
-          description: List of Timecards
+          description: List of Timecards retrieved successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Timecard'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Timecard'
+                  - $ref: '#/components/schemas/Error'
         '400':
-          description: Error message
+          description: Error occurred while retrieving timecards
           content:
             application/json:
               schema:
@@ -531,25 +597,45 @@ components:
       properties:
         dept_id:
           type: integer
+          example: 1
         company:
           type: string
+          example: "rituserid"
         dept_name:
           type: string
+          example: "accounting"
         dept_no:
           type: string
+          example: "d10"
         location:
           type: string
+          example: "new york"
+      required:
+        - dept_id
+        - company
+        - dept_name
+        - dept_no
+        - location
     DepartmentInput:
       type: object
       properties:
         company:
           type: string
+          example: "rituserid"
         dept_name:
           type: string
+          example: "mystery"
         dept_no:
           type: string
+          example: "d10"
         location:
           type: string
+          example: "buffalo"
+      required:
+        - company
+        - dept_name
+        - dept_no
+        - location
     SuccessDepartment:
       type: object
       properties:
@@ -560,53 +646,89 @@ components:
       properties:
         success:
           type: string
+          example: "Department 5 from rituserid deleted."
     Error:
       type: object
       properties:
         error:
           type: string
+          example: "An appropriate error message."
     Employee:
       type: object
       properties:
         emp_id:
           type: integer
+          example: 2
         emp_name:
           type: string
+          example: "jones"
         emp_no:
           type: string
+          example: "e2"
         hire_date:
           type: string
           format: date
+          example: "1981-04-01"
         job:
           type: string
+          example: "manager"
         salary:
           type: number
           format: float
+          example: 2975.0
         dept_id:
           type: integer
+          example: 2
         mng_id:
           type: integer
+          example: 1
+      required:
+        - emp_id
+        - emp_name
+        - emp_no
+        - hire_date
+        - job
+        - salary
+        - dept_id
+        - mng_id
     EmployeeInput:
       type: object
       properties:
         company:
           type: string
+          example: "yourRITid"
         emp_name:
           type: string
+          example: "french"
         emp_no:
           type: string
+          example: "rituserid-e1b"
         hire_date:
           type: string
           format: date
+          example: "2018-06-16"
         job:
           type: string
+          example: "programmer"
         salary:
           type: number
           format: float
+          example: 5000.0
         dept_id:
           type: integer
+          example: 1
         mng_id:
           type: integer
+          example: 2
+      required:
+        - company
+        - emp_name
+        - emp_no
+        - hire_date
+        - job
+        - salary
+        - dept_id
+        - mng_id
     SuccessEmployee:
       type: object
       properties:
@@ -617,27 +739,50 @@ components:
       properties:
         timecard_id:
           type: integer
+          example: 1
         start_time:
           type: string
           format: date-time
+          example: "2018-06-14 11:30:00"
         end_time:
           type: string
           format: date-time
+          example: "2018-06-14 15:30:00"
         emp_id:
           type: integer
+          example: 2
+      required:
+        - timecard_id
+        - start_time
+        - end_time
+        - emp_id
     TimecardInput:
       type: object
       properties:
         company:
           type: string
+          example: "yourRITid"
         emp_id:
           type: integer
+          example: 1
         start_time:
           type: string
           format: date-time
+          example: "2018-06-15 12:30:00"
         end_time:
           type: string
           format: date-time
+          example: "2018-06-15 15:30:00"
+      required:
+        - company
+        - emp_id
+        - start_time
+        - end_time
+    TimecardOutput:
+      type: object
+      properties:
+        timecard:
+          $ref: '#/components/schemas/Timecard'
     SuccessTimecard:
       type: object
       properties:
