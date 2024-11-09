@@ -9,6 +9,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -97,6 +98,37 @@ public class MyResource {
       return Response.status(Response.Status.CREATED)
         .entity(job.build())
         .build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @PUT
+  @Path("department")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response updateDepartment(Department dept) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      Department updatedDept = bl.updateDepartment(
+        dept.getId(),
+        dept.getCompany(),
+        dept.getDeptName(),
+        dept.getDeptNo(),
+        dept.getLocation()
+      );
+      JsonObjectBuilder deptJson = Json.createObjectBuilder()
+        .add("dept_id", updatedDept.getId())
+        .add("company", updatedDept.getCompany())
+        .add("dept_name", updatedDept.getDeptName())
+        .add("dept_no", updatedDept.getDeptNo())
+        .add("location", updatedDept.getLocation());
+      job.add("department", deptJson);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)

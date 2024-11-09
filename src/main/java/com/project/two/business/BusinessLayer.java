@@ -40,4 +40,21 @@ public class BusinessLayer {
       System.out.println("Error in insertDepartment: " + e.getMessage());
     }
   }
+
+  public Department updateDepartment(
+    int id,
+    String company,
+    String deptName,
+    String deptNo,
+    String location
+  ) {
+    try {
+      Department dept = new Department(id, company, deptName, deptNo, location);
+      dl.updateDepartment(dept);
+      return dept;
+    } catch (Exception e) {
+      System.out.println("Error in updateDepartment: " + e.getMessage());
+    }
+    return null;
+  }
 }
