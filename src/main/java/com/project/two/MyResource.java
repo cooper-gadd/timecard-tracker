@@ -95,8 +95,8 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response insertDepartment(
     @FormParam("company") String company,
-    @FormParam("deptName") String deptName,
-    @FormParam("deptNo") String deptNo,
+    @FormParam("dept_name") String deptName,
+    @FormParam("dept_no") String deptNo,
     @FormParam("location") String location
   ) {
     BusinessLayer bl = new BusinessLayer();
@@ -114,7 +114,7 @@ public class MyResource {
         .add("dept_name", dept.getDeptName())
         .add("dept_no", dept.getDeptNo())
         .add("location", dept.getLocation());
-      job.add("successs", deptJson);
+      job.add("success", deptJson);
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
