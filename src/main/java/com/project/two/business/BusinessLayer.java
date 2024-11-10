@@ -39,6 +39,11 @@ public class BusinessLayer {
     String location
   ) {
     try {
+      // dept_no must be unique among all companies, Suggestion: include company name as part of id
+      if (!deptNo.contains(company)) {
+        deptNo = company + "_" + deptNo;
+      }
+
       Department dept = new Department(company, deptName, deptNo, location);
       dl.insertDepartment(dept);
       return dept;
