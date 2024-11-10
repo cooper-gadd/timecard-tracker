@@ -411,4 +411,35 @@ public class MyResource {
         .build();
     }
   }
+
+  @GET
+  @Path("timecards")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getTimecards(
+    @QueryParam("company") String company,
+    @QueryParam("emp_id") int emp_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    try {
+      List<Timecard> timecards = bl.getAllTimecards(company, emp_id);
+      JsonArrayBuilder timecardsJson = Json.createArrayBuilder();
+      for (Timecard tc : timecards) {
+        JsonObjectBuilder tcJson = Json.createObjectBuilder()
+          .add("timecard_id", tc.getId())
+          .add("start_time", tc.getStartTime().toString())
+          .add("end_time", tc.getEndTime().toString())
+          .add("emp_id", tc.getEmpId());
+        timecardsJson.add(tcJson);
+      }
+      return Response.status(Response.Status.OK)
+        .entity(timecardsJson.build())
+        .build();
+    } catch (Exception e) {
+      JsonObjectBuilder job = Json.createObjectBuilder();
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
 }
