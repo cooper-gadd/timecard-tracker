@@ -412,27 +412,6 @@ public class MyResource {
     }
   }
 
-  @DELETE
-  @Path("timecard")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteTimecard(
-    @QueryParam("company") String company,
-    @QueryParam("timecard_id") int timecard_id
-  ) {
-    BusinessLayer bl = new BusinessLayer();
-    JsonObjectBuilder job = Json.createObjectBuilder();
-    try {
-      bl.deleteTimecard(company, timecard_id);
-      job.add("success", "Timecard " + timecard_id + " deleted");
-      return Response.status(Response.Status.OK).entity(job.build()).build();
-    } catch (Exception e) {
-      job.add("error", e.getMessage());
-      return Response.status(Response.Status.BAD_REQUEST)
-        .entity(job.build())
-        .build();
-    }
-  }
-
   @GET
   @Path("timecards")
   @Produces(MediaType.APPLICATION_JSON)
@@ -457,6 +436,27 @@ public class MyResource {
         .build();
     } catch (Exception e) {
       JsonObjectBuilder job = Json.createObjectBuilder();
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @DELETE
+  @Path("timecard")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response deleteTimecard(
+    @QueryParam("company") String company,
+    @QueryParam("timecard_id") int timecard_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      bl.deleteTimecard(company, timecard_id);
+      job.add("success", "Timecard " + timecard_id + " deleted");
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())

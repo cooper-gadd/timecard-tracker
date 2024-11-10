@@ -269,15 +269,6 @@ public class BusinessLayer {
     return null;
   }
 
-  public int deleteTimecard(String company, int id) {
-    try {
-      return dl.deleteTimecard(id);
-    } catch (Exception e) {
-      System.out.println("Error in deleteTimecard: " + e.getMessage());
-    }
-    return -1;
-  }
-
   public List<Timecard> getAllTimecards(String company, int emp_id) {
     try {
       return dl.getAllTimecard(emp_id);
@@ -285,5 +276,14 @@ public class BusinessLayer {
       System.out.println("Error in getTimecards: " + e.getMessage());
     }
     return null;
+  }
+
+  public int deleteTimecard(String company, int id) {
+    try {
+      return dl.deleteTimecard(id);
+    } catch (Exception e) {
+      System.out.println("Error in deleteTimecard: " + e.getMessage());
+    }
+    return -1;
   }
 }
