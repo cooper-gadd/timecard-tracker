@@ -56,6 +56,15 @@ public class BusinessLayer {
     String location
   ) {
     try {
+      //dept_no must be unique among all companies, Suggestion: include company name as part of id
+      if (!deptNo.contains(company)) {
+        deptNo = company + "_" + deptNo;
+      }
+
+      // dept_id must be an existing record number for a department
+      if (dl.getDepartment(company, id) == null) {
+        return null;
+      }
       Department dept = new Department(id, company, deptName, deptNo, location);
       dl.updateDepartment(dept);
       return dept;
