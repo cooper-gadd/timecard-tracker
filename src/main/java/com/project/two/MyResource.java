@@ -66,12 +66,12 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getDepartment(
     @QueryParam("company") String company,
-    @QueryParam("dept_id") int dept_id
+    @QueryParam("dept_id") int deptId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      Department dept = bl.getDepartment(company, dept_id);
+      Department dept = bl.getDepartment(company, deptId);
       JsonObjectBuilder deptJson = Json.createObjectBuilder()
         .add("dept_id", dept.getId())
         .add("company", dept.getCompany())
@@ -163,15 +163,15 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteDepartment(
     @QueryParam("company") String company,
-    @QueryParam("dept_id") int dept_id
+    @QueryParam("dept_id") int deptId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      bl.deleteDepartment(company, dept_id);
+      bl.deleteDepartment(company, deptId);
       job.add(
         "success",
-        "Department " + dept_id + " from " + company + " deleted."
+        "Department " + deptId + " from " + company + " deleted."
       );
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
@@ -248,12 +248,12 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getEmployee(
     @QueryParam("company") String company,
-    @QueryParam("emp_id") int emp_id
+    @QueryParam("emp_id") int empId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      Employee emp = bl.getEmployee(company, emp_id);
+      Employee emp = bl.getEmployee(company, empId);
       JsonObjectBuilder empJson = Json.createObjectBuilder()
         .add("emp_id", emp.getId())
         .add("emp_name", emp.getEmpName())
@@ -368,13 +368,13 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteEmployee(
     @QueryParam("company") String company,
-    @QueryParam("emp_id") int emp_id
+    @QueryParam("emp_id") int empId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      bl.deleteEmployee(company, emp_id);
-      job.add("success", "Employee " + emp_id + " deleted");
+      bl.deleteEmployee(company, empId);
+      job.add("success", "Employee " + empId + " deleted");
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
@@ -389,12 +389,12 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTimecard(
     @QueryParam("company") String company,
-    @QueryParam("timecard_id") int timecard_id
+    @QueryParam("timecard_id") int timecardId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      Timecard tc = bl.getTimecard(company, timecard_id);
+      Timecard tc = bl.getTimecard(company, timecardId);
       JsonObjectBuilder tcJson = Json.createObjectBuilder()
         .add("timecard_id", tc.getId())
         .add("start_time", tc.getStartTime().toString())
@@ -418,11 +418,11 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTimecards(
     @QueryParam("company") String company,
-    @QueryParam("emp_id") int emp_id
+    @QueryParam("emp_id") int empId
   ) {
     BusinessLayer bl = new BusinessLayer();
     try {
-      List<Timecard> timecards = bl.getAllTimecards(company, emp_id);
+      List<Timecard> timecards = bl.getAllTimecards(company, empId);
       JsonArrayBuilder timecardsJson = Json.createArrayBuilder();
       for (Timecard tc : timecards) {
         JsonObjectBuilder tcJson = Json.createObjectBuilder()
@@ -450,18 +450,18 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response insertTimecard(
     @FormParam("company") String company,
-    @FormParam("emp_id") int emp_id,
-    @FormParam("start_time") String start_time,
-    @FormParam("end_time") String end_time
+    @FormParam("emp_id") int empId,
+    @FormParam("start_time") String startTime,
+    @FormParam("end_time") String endTime
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
       Timecard tc = bl.insertTimecard(
         company,
-        emp_id,
-        Timestamp.valueOf(start_time),
-        Timestamp.valueOf(end_time)
+        empId,
+        Timestamp.valueOf(startTime),
+        Timestamp.valueOf(endTime)
       );
       JsonObjectBuilder tcJson = Json.createObjectBuilder()
         .add("timecard_id", tc.getId())
@@ -516,13 +516,13 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteTimecard(
     @QueryParam("company") String company,
-    @QueryParam("timecard_id") int timecard_id
+    @QueryParam("timecard_id") int timecardId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      bl.deleteTimecard(company, timecard_id);
-      job.add("success", "Timecard " + timecard_id + " deleted");
+      bl.deleteTimecard(company, timecardId);
+      job.add("success", "Timecard " + timecardId + " deleted");
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());

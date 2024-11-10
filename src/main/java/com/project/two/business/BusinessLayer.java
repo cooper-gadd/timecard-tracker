@@ -181,14 +181,14 @@ public class BusinessLayer {
 
   public Employee updateEmployee(
     String company,
-    int emp_id,
-    String emp_name,
-    String emp_no,
-    Date hire_date,
+    int empId,
+    String empName,
+    String empNo,
+    Date hireDate,
     String job,
     double salary,
-    int dept_id,
-    int mng_id
+    int deptId,
+    int mngId
   ) {
     try {
       // company – must be your RIT username
@@ -197,52 +197,52 @@ public class BusinessLayer {
       }
 
       // dept_id must exist as a Department in your company
-      if (dl.getDepartment(company, dept_id) == null) {
+      if (dl.getDepartment(company, deptId) == null) {
         return null;
       }
 
       // mng_id must be the record id of an existing Employee in your company. Use 0 if the first employee or any other employee that doesn’t have a manager.
-      if (dl.getEmployee(mng_id) == null && mng_id != 0) {
+      if (dl.getEmployee(mngId) == null && mngId != 0) {
         return null;
       }
 
       // hire_date must be a valid date equal to the current date or earlier (e.g. current date or in the past)
-      if (hire_date.after(new Date(System.currentTimeMillis()))) {
+      if (hireDate.after(new Date(System.currentTimeMillis()))) {
         return null;
       }
 
       // hire_date must be a Monday, Tuesday, Wednesday, Thursday or a Friday. It cannot be Saturday or Sunday.
       Calendar c = Calendar.getInstance();
-      c.setTime(hire_date);
+      c.setTime(hireDate);
       int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
       if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
         return null;
       }
 
       // emp_no must be unique amongst all employees in the database, including those of other companies. You may wish to include your RIT user ID in the employee number somehow.
-      if (!emp_no.contains(company)) {
-        emp_no = company + "_" + emp_no;
+      if (!empNo.contains(company)) {
+        empNo = company + "_" + empNo;
       }
 
       // emp_id must be an existing record number for an employee
-      if (dl.getEmployee(emp_id) == null) {
+      if (dl.getEmployee(empId) == null) {
         return null;
       }
 
       // emp_id must be a valid record id in the database
-      if (dl.getEmployee(emp_id) == null) {
+      if (dl.getEmployee(empId) == null) {
         return null;
       }
 
       Employee emp = new Employee(
-        emp_id,
-        emp_name,
-        emp_no,
-        hire_date,
+        empId,
+        empName,
+        empNo,
+        hireDate,
         job,
         salary,
-        dept_id,
-        mng_id
+        deptId,
+        mngId
       );
       dl.updateEmployee(emp);
       return emp;
@@ -270,9 +270,9 @@ public class BusinessLayer {
     return null;
   }
 
-  public List<Timecard> getAllTimecards(String company, int emp_id) {
+  public List<Timecard> getAllTimecards(String company, int empId) {
     try {
-      return dl.getAllTimecard(emp_id);
+      return dl.getAllTimecard(empId);
     } catch (Exception e) {
       System.out.println("Error in getTimecards: " + e.getMessage());
     }
@@ -281,9 +281,9 @@ public class BusinessLayer {
 
   public Timecard insertTimecard(
     String company,
-    int emp_id,
-    Timestamp start_time,
-    Timestamp end_time
+    int empId,
+    Timestamp startTime,
+    Timestamp endTime
   ) {
     try {
       // company must be your RIT id
@@ -292,14 +292,14 @@ public class BusinessLayer {
       }
 
       // emp_id must exist as the record id of an Employee in your company.
-      if (dl.getEmployee(emp_id) == null) {
+      if (dl.getEmployee(empId) == null) {
         return null;
       }
 
       // start_time must be a valid date and time equal to the current date
       Calendar currentDate = Calendar.getInstance();
       Calendar startDate = Calendar.getInstance();
-      startDate.setTime(start_time);
+      startDate.setTime(startTime);
 
       if (startDate.after(currentDate)) {
         return null;
@@ -316,9 +316,9 @@ public class BusinessLayer {
 
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
       Calendar endDate = Calendar.getInstance();
-      endDate.setTime(end_time);
+      endDate.setTime(endTime);
 
-      long timeDiff = end_time.getTime() - start_time.getTime();
+      long timeDiff = endTime.getTime() - startTime.getTime();
       if (timeDiff < 3600000) { // 1 hour in milliseconds
         return null;
       }
@@ -361,7 +361,7 @@ public class BusinessLayer {
       }
 
       // start_time must not be on the same day as any other start_time for that employee.
-      List<Timecard> existingCards = dl.getAllTimecard(emp_id);
+      List<Timecard> existingCards = dl.getAllTimecard(empId);
       if (existingCards != null) {
         for (Timecard card : existingCards) {
           Calendar cardDate = Calendar.getInstance();
@@ -378,7 +378,7 @@ public class BusinessLayer {
         }
       }
 
-      Timecard tc = new Timecard(start_time, end_time, emp_id);
+      Timecard tc = new Timecard(startTime, endTime, empId);
       dl.insertTimecard(tc);
       return tc;
     } catch (Exception e) {
@@ -389,10 +389,10 @@ public class BusinessLayer {
 
   public Timecard updateTimecard(
     String company,
-    int timecard_id,
-    int emp_id,
-    Timestamp start_time,
-    Timestamp end_time
+    int timecardId,
+    int empId,
+    Timestamp startTime,
+    Timestamp endTime
   ) {
     try {
       // company must be your RIT id
@@ -401,14 +401,14 @@ public class BusinessLayer {
       }
 
       // emp_id must exist as the record id of an Employee in your company.
-      if (dl.getEmployee(emp_id) == null) {
+      if (dl.getEmployee(empId) == null) {
         return null;
       }
 
       // start_time must be a valid date and time equal to the current date
       Calendar currentDate = Calendar.getInstance();
       Calendar startDate = Calendar.getInstance();
-      startDate.setTime(start_time);
+      startDate.setTime(startTime);
 
       if (startDate.after(currentDate)) {
         return null;
@@ -425,9 +425,9 @@ public class BusinessLayer {
 
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
       Calendar endDate = Calendar.getInstance();
-      endDate.setTime(end_time);
+      endDate.setTime(endTime);
 
-      long timeDiff = end_time.getTime() - start_time.getTime();
+      long timeDiff = endTime.getTime() - startTime.getTime();
       if (timeDiff < 3600000) { // 1 hour in milliseconds
         return null;
       }
@@ -470,7 +470,7 @@ public class BusinessLayer {
       }
 
       // start_time must not be on the same day as any other start_time for that employee.
-      List<Timecard> existingCards = dl.getAllTimecard(emp_id);
+      List<Timecard> existingCards = dl.getAllTimecard(empId);
       if (existingCards != null) {
         for (Timecard card : existingCards) {
           Calendar cardDate = Calendar.getInstance();
@@ -488,11 +488,11 @@ public class BusinessLayer {
       }
 
       // timecard_id must be a valid record id in the database
-      if (dl.getTimecard(timecard_id) == null) {
+      if (dl.getTimecard(timecardId) == null) {
         return null;
       }
 
-      Timecard tc = new Timecard(timecard_id, start_time, end_time, emp_id);
+      Timecard tc = new Timecard(timecardId, startTime, endTime, empId);
       dl.updateTimecard(tc);
       return tc;
     } catch (Exception e) {
