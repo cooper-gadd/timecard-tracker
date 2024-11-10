@@ -17,9 +17,9 @@ public class BusinessLayer {
     dl = new DataLayer("ctg7866");
   }
 
-  public int deleteCompany(String companyName) {
+  public int deleteCompany(String company) {
     try {
-      return dl.deleteCompany(companyName);
+      return dl.deleteCompany(company);
     } catch (Exception e) {
       System.out.println("Error in deleteCompany: " + e.getMessage());
     }

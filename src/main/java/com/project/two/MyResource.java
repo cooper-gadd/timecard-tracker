@@ -46,12 +46,12 @@ public class MyResource {
   @DELETE
   @Path("company")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteCompany(@QueryParam("companyName") String companyName) {
+  public Response deleteCompany(@QueryParam("company") String company) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      bl.deleteCompany(companyName);
-      job.add("success", companyName + "'s information deleted.");
+      bl.deleteCompany(company);
+      job.add("success", company + "'s information deleted.");
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
