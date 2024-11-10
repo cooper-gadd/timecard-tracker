@@ -6,6 +6,7 @@ import companydata.Employee;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -18,6 +19,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.io.StringReader;
 import java.sql.Date;
 import java.util.List;
 
@@ -124,16 +126,19 @@ public class MyResource {
   @Path("department")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response updateDepartment(Department dept) {
+  public Response updateDepartment(String jsonString) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
+      JsonObject departmentJson = Json.createReader(
+        new StringReader(jsonString)
+      ).readObject();
       Department updatedDept = bl.updateDepartment(
-        dept.getId(),
-        dept.getCompany(),
-        dept.getDeptName(),
-        dept.getDeptNo(),
-        dept.getLocation()
+        departmentJson.getInt("dept_id"),
+        departmentJson.getString("company"),
+        departmentJson.getString("dept_name"),
+        departmentJson.getString("dept_no"),
+        departmentJson.getString("location")
       );
       JsonObjectBuilder deptJson = Json.createObjectBuilder()
         .add("dept_id", updatedDept.getId())
@@ -311,6 +316,47 @@ public class MyResource {
       jsonObjectBuilder.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(jsonObjectBuilder.build())
+        .build();
+    }
+  }
+
+  @PUT
+  @Path("employee")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response updateEmployee(String jsonString) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      JsonObject jsonObject = Json.createReader(
+        new StringReader(jsonString)
+      ).readObject();
+      Employee emp = bl.updateEmployee(
+        jsonObject.getString("company"),
+        jsonObject.getInt("emp_id"),
+        jsonObject.getString("emp_name"),
+        jsonObject.getString("emp_no"),
+        Date.valueOf(jsonObject.getString("hire_date")),
+        jsonObject.getString("job"),
+        jsonObject.getJsonNumber("salary").doubleValue(),
+        jsonObject.getInt("dept_id"),
+        jsonObject.getInt("mng_id")
+      );
+      JsonObjectBuilder empJson = Json.createObjectBuilder()
+        .add("emp_id", emp.getId())
+        .add("emp_name", emp.getEmpName())
+        .add("emp_no", emp.getEmpNo())
+        .add("hire_date", emp.getHireDate().toString())
+        .add("job", emp.getJob())
+        .add("salary", emp.getSalary())
+        .add("dept_id", emp.getDeptId())
+        .add("mng_id", emp.getMngId());
+      job.add("success", empJson);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
         .build();
     }
   }

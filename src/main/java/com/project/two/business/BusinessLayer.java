@@ -176,4 +176,77 @@ public class BusinessLayer {
     }
     return null;
   }
+
+  public Employee updateEmployee(
+    String company,
+    int emp_id,
+    String emp_name,
+    String emp_no,
+    Date hire_date,
+    String job,
+    double salary,
+    int dept_id,
+    int mng_id
+  ) {
+    try {
+      // company – must be your RIT username
+      if (!company.equals("ctg7866")) {
+        return null;
+      }
+
+      // dept_id must exist as a Department in your company
+      if (dl.getDepartment(company, dept_id) == null) {
+        return null;
+      }
+
+      // mng_id must be the record id of an existing Employee in your company. Use 0 if the first employee or any other employee that doesn’t have a manager.
+      if (dl.getEmployee(mng_id) == null && mng_id != 0) {
+        return null;
+      }
+
+      // hire_date must be a valid date equal to the current date or earlier (e.g. current date or in the past)
+      if (hire_date.after(new Date(System.currentTimeMillis()))) {
+        return null;
+      }
+
+      // hire_date must be a Monday, Tuesday, Wednesday, Thursday or a Friday. It cannot be Saturday or Sunday.
+      Calendar c = Calendar.getInstance();
+      c.setTime(hire_date);
+      int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+      if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+        return null;
+      }
+
+      // emp_no must be unique amongst all employees in the database, including those of other companies. You may wish to include your RIT user ID in the employee number somehow.
+      if (!emp_no.contains(company)) {
+        emp_no = company + "_" + emp_no;
+      }
+
+      // emp_id must be an existing record number for an employee
+      if (dl.getEmployee(emp_id) == null) {
+        return null;
+      }
+
+      // emp_id must be a valid record id in the database
+      if (dl.getEmployee(emp_id) == null) {
+        return null;
+      }
+
+      Employee emp = new Employee(
+        emp_id,
+        emp_name,
+        emp_no,
+        hire_date,
+        job,
+        salary,
+        dept_id,
+        mng_id
+      );
+      dl.updateEmployee(emp);
+      return emp;
+    } catch (Exception e) {
+      System.out.println("Error in updateEmployee: " + e.getMessage());
+    }
+    return null;
+  }
 }
