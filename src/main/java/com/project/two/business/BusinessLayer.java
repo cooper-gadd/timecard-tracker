@@ -90,4 +90,13 @@ public class BusinessLayer {
     }
     return null;
   }
+
+  public Employee getEmployee(String company, int id) {
+    try {
+      return dl.getEmployee(id);
+    } catch (Exception e) {
+      System.out.println("Error in getEmployee: " + e.getMessage());
+    }
+    return null;
+  }
 }

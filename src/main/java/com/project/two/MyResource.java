@@ -234,4 +234,35 @@ public class MyResource {
         .build();
     }
   }
+
+  @GET
+  @Path("employee")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getEmployee(
+    @QueryParam("company") String company,
+    @QueryParam("emp_id") int emp_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      Employee emp = bl.getEmployee(company, emp_id);
+      JsonObjectBuilder empJson = Json.createObjectBuilder()
+        .add("emp_id", emp.getId())
+        .add("emp_name", emp.getEmpName())
+        .add("emp_no", emp.getEmpNo())
+        .add("hire_date", emp.getHireDate().toString())
+        .add("job", emp.getJob())
+        .add("salary", emp.getSalary())
+        .add("dept_id", emp.getDeptId())
+        .add("mng_id", emp.getMngId());
+      return Response.status(Response.Status.OK)
+        .entity(empJson.build())
+        .build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
 }
