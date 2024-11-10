@@ -3,6 +3,7 @@ package com.project.two.business;
 import companydata.DataLayer;
 import companydata.Department;
 import companydata.Employee;
+import companydata.Timecard;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -257,5 +258,14 @@ public class BusinessLayer {
       System.out.println("Error in deleteEmployee: " + e.getMessage());
     }
     return -1;
+  }
+
+  public Timecard getTimecard(String company, int id) {
+    try {
+      return dl.getTimecard(id);
+    } catch (Exception e) {
+      System.out.println("Error in getTimecard: " + e.getMessage());
+    }
+    return null;
   }
 }

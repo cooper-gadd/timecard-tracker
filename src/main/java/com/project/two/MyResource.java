@@ -3,6 +3,7 @@ package com.project.two;
 import com.project.two.business.BusinessLayer;
 import companydata.Department;
 import companydata.Employee;
+import companydata.Timecard;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -374,6 +375,35 @@ public class MyResource {
       bl.deleteEmployee(company, emp_id);
       job.add("success", "Employee " + emp_id + " deleted");
       return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
+  @Path("timecard")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getTimecard(
+    @QueryParam("company") String company,
+    @QueryParam("timecard_id") int timecard_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      Timecard tc = bl.getTimecard(company, timecard_id);
+      JsonObjectBuilder tcJson = Json.createObjectBuilder()
+        .add("timecard_id", tc.getId())
+        .add("start_time", tc.getStartTime().toString())
+        .add("end_time", tc.getEndTime().toString())
+        .add("emp_id", tc.getEmpId());
+      JsonObjectBuilder responseJson = Json.createObjectBuilder()
+        .add("timecard", tcJson);
+      return Response.status(Response.Status.OK)
+        .entity(responseJson.build())
+        .build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
