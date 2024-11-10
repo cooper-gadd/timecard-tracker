@@ -97,11 +97,20 @@ public class MyResource {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
-      bl.insertDepartment(company, deptName, deptNo, location);
-      job.add("success", true);
-      return Response.status(Response.Status.CREATED)
-        .entity(job.build())
-        .build();
+      Department dept = bl.insertDepartment(
+        company,
+        deptName,
+        deptNo,
+        location
+      );
+      JsonObjectBuilder deptJson = Json.createObjectBuilder()
+        .add("dept_id", dept.getId())
+        .add("company", dept.getCompany())
+        .add("dept_name", dept.getDeptName())
+        .add("dept_no", dept.getDeptNo())
+        .add("location", dept.getLocation());
+      job.add("department", deptJson);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)

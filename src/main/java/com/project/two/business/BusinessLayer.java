@@ -30,17 +30,20 @@ public class BusinessLayer {
     return null;
   }
 
-  public void insertDepartment(
+  public Department insertDepartment(
     String company,
     String deptName,
     String deptNo,
     String location
   ) {
     try {
-      dl.insertDepartment(new Department(company, deptName, deptNo, location));
+      Department dept = new Department(company, deptName, deptNo, location);
+      dl.insertDepartment(dept);
+      return dept;
     } catch (Exception e) {
       System.out.println("Error in insertDepartment: " + e.getMessage());
     }
+    return null;
   }
 
   public Department updateDepartment(
