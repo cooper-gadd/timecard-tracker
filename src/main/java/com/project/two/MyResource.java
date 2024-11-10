@@ -18,6 +18,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -262,6 +263,54 @@ public class MyResource {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())
+        .build();
+    }
+  }
+
+  @POST
+  @Path("employee")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response addEmployee(
+    @FormParam("company") String company,
+    @FormParam("emp_name") String emp_name,
+    @FormParam("emp_no") String emp_no,
+    @FormParam("hire_date") Date hire_date,
+    @FormParam("job") String job,
+    @FormParam("salary") double salary,
+    @FormParam("dept_id") int dept_id,
+    @FormParam("mng_id") int mng_id
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+    try {
+      Employee emp = bl.insertEmployee(
+        company,
+        emp_name,
+        emp_no,
+        hire_date,
+        job,
+        salary,
+        dept_id,
+        mng_id
+      );
+      JsonObjectBuilder empJson = Json.createObjectBuilder()
+        .add("emp_id", emp.getId())
+        .add("emp_name", emp.getEmpName())
+        .add("emp_no", emp.getEmpNo())
+        .add("hire_date", emp.getHireDate().toString())
+        .add("job", emp.getJob())
+        .add("salary", emp.getSalary())
+        .add("dept_id", emp.getDeptId())
+        .add("mng_id", emp.getMngId());
+      jsonObjectBuilder.add("success", empJson);
+      return Response.status(Response.Status.OK)
+        .entity(jsonObjectBuilder.build())
+        .build();
+    } catch (Exception e) {
+      jsonObjectBuilder.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(jsonObjectBuilder.build())
         .build();
     }
   }

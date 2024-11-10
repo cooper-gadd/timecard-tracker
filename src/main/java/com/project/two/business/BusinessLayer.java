@@ -3,6 +3,7 @@ package com.project.two.business;
 import companydata.DataLayer;
 import companydata.Department;
 import companydata.Employee;
+import java.sql.Date;
 import java.util.List;
 
 public class BusinessLayer {
@@ -96,6 +97,34 @@ public class BusinessLayer {
       return dl.getEmployee(id);
     } catch (Exception e) {
       System.out.println("Error in getEmployee: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public Employee insertEmployee(
+    String company,
+    String emp_name,
+    String emp_no,
+    Date hire_date,
+    String job,
+    double salary,
+    int dept_id,
+    int mng_id
+  ) {
+    try {
+      Employee emp = new Employee(
+        emp_name,
+        emp_no,
+        hire_date,
+        job,
+        salary,
+        dept_id,
+        mng_id
+      );
+      dl.insertEmployee(emp);
+      return emp;
+    } catch (Exception e) {
+      System.out.println("Error in insertEmployee: " + e.getMessage());
     }
     return null;
   }
