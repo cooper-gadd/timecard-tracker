@@ -22,6 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.io.StringReader;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -277,7 +278,7 @@ public class MyResource {
   @Path("employee")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response addEmployee(
+  public Response insertEmployee(
     @FormParam("company") String company,
     @FormParam("emp_name") String emp_name,
     @FormParam("emp_no") String emp_no,
@@ -436,6 +437,40 @@ public class MyResource {
         .build();
     } catch (Exception e) {
       JsonObjectBuilder job = Json.createObjectBuilder();
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @POST
+  @Path("timecard")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response insertTimecard(
+    @FormParam("company") String company,
+    @FormParam("emp_id") int emp_id,
+    @FormParam("start_time") String start_time,
+    @FormParam("end_time") String end_time
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      Timecard tc = bl.insertTimecard(
+        company,
+        emp_id,
+        Timestamp.valueOf(start_time),
+        Timestamp.valueOf(end_time)
+      );
+      JsonObjectBuilder tcJson = Json.createObjectBuilder()
+        .add("timecard_id", tc.getId())
+        .add("start_time", tc.getStartTime().toString())
+        .add("end_time", tc.getEndTime().toString())
+        .add("emp_id", tc.getEmpId());
+      job.add("success", tcJson);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())
