@@ -73,8 +73,9 @@ public class MyResource {
         .add("dept_name", dept.getDeptName())
         .add("dept_no", dept.getDeptNo())
         .add("location", dept.getLocation());
-      job.add("department", deptJson);
-      return Response.status(Response.Status.OK).entity(job.build()).build();
+      return Response.status(Response.Status.OK)
+        .entity(deptJson.build())
+        .build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
@@ -108,7 +109,7 @@ public class MyResource {
         .add("dept_name", dept.getDeptName())
         .add("dept_no", dept.getDeptNo())
         .add("location", dept.getLocation());
-      job.add("department", deptJson);
+      job.add("successs", deptJson);
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
@@ -139,7 +140,7 @@ public class MyResource {
         .add("dept_name", updatedDept.getDeptName())
         .add("dept_no", updatedDept.getDeptNo())
         .add("location", updatedDept.getLocation());
-      job.add("department", deptJson);
+      job.add("success", deptJson);
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
@@ -160,7 +161,10 @@ public class MyResource {
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
       bl.deleteDepartment(company, dept_id);
-      job.add("success", true);
+      job.add(
+        "success",
+        "Department " + dept_id + " from " + company + " deleted."
+      );
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());
