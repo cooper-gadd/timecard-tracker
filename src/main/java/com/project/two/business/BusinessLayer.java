@@ -387,6 +387,120 @@ public class BusinessLayer {
     return null;
   }
 
+  public Timecard updateTimecard(
+    String company,
+    int timecard_id,
+    int emp_id,
+    Timestamp start_time,
+    Timestamp end_time
+  ) {
+    try {
+      // company must be your RIT id
+      if (!company.equals("ctg7866")) {
+        return null;
+      }
+
+      // emp_id must exist as the record id of an Employee in your company.
+      if (dl.getEmployee(emp_id) == null) {
+        return null;
+      }
+
+      // start_time must be a valid date and time equal to the current date
+      Calendar currentDate = Calendar.getInstance();
+      Calendar startDate = Calendar.getInstance();
+      startDate.setTime(start_time);
+
+      if (startDate.after(currentDate)) {
+        return null;
+      }
+
+      // or back to the Monday prior to the current date if the current date is not a Monday.
+      while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+        currentDate.add(Calendar.DATE, -1);
+      }
+
+      if (startDate.before(currentDate)) {
+        return null;
+      }
+
+      // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
+      Calendar endDate = Calendar.getInstance();
+      endDate.setTime(end_time);
+
+      long timeDiff = end_time.getTime() - start_time.getTime();
+      if (timeDiff < 3600000) { // 1 hour in milliseconds
+        return null;
+      }
+
+      if (
+        startDate.get(Calendar.YEAR) != endDate.get(Calendar.YEAR) ||
+        startDate.get(Calendar.MONTH) != endDate.get(Calendar.MONTH) ||
+        startDate.get(Calendar.DAY_OF_MONTH) !=
+        endDate.get(Calendar.DAY_OF_MONTH)
+      ) {
+        return null;
+      }
+
+      // start_time and end_time must be a Monday, Tuesday, Wednesday, Thursday or a Friday. They cannot be Saturday or Sunday.
+      int startDay = startDate.get(Calendar.DAY_OF_WEEK);
+      int endDay = endDate.get(Calendar.DAY_OF_WEEK);
+
+      if (
+        startDay == Calendar.SATURDAY ||
+        startDay == Calendar.SUNDAY ||
+        endDay == Calendar.SATURDAY ||
+        endDay == Calendar.SUNDAY
+      ) {
+        return null;
+      }
+
+      // start_time and end_time must be between the hours (in 24 hour format) of 08:00:00 and 18:00:00 inclusive.
+      int startHour = startDate.get(Calendar.HOUR_OF_DAY);
+      int endHour = endDate.get(Calendar.HOUR_OF_DAY);
+      int endMinute = endDate.get(Calendar.MINUTE);
+
+      if (
+        startHour < 8 ||
+        startHour > 18 ||
+        endHour < 8 ||
+        (endHour == 18 && endMinute > 0) ||
+        endHour > 18
+      ) {
+        return null;
+      }
+
+      // start_time must not be on the same day as any other start_time for that employee.
+      List<Timecard> existingCards = dl.getAllTimecard(emp_id);
+      if (existingCards != null) {
+        for (Timecard card : existingCards) {
+          Calendar cardDate = Calendar.getInstance();
+          cardDate.setTime(card.getStartTime());
+
+          if (
+            startDate.get(Calendar.YEAR) == cardDate.get(Calendar.YEAR) &&
+            startDate.get(Calendar.MONTH) == cardDate.get(Calendar.MONTH) &&
+            startDate.get(Calendar.DAY_OF_MONTH) ==
+            cardDate.get(Calendar.DAY_OF_MONTH)
+          ) {
+            return null;
+          }
+        }
+      }
+
+      // timecard_id must be a valid record id in the database
+      if (dl.getTimecard(timecard_id) == null) {
+        return null;
+      }
+
+      Timecard tc = new Timecard(timecard_id, start_time, end_time, emp_id);
+      dl.updateTimecard(tc);
+      return tc;
+    } catch (Exception e) {
+      System.out.println("Error in updateTimecard: " + e.getMessage());
+    }
+    return null;
+  }
+
   public int deleteTimecard(String company, int id) {
     try {
       return dl.deleteTimecard(id);

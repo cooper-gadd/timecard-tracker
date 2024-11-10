@@ -478,6 +478,39 @@ public class MyResource {
     }
   }
 
+  @PUT
+  @Path("timecard")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response updateTimecard(String timecardJson) {
+    BusinessLayer bl = new BusinessLayer();
+    JsonObjectBuilder job = Json.createObjectBuilder();
+    try {
+      JsonObject json = Json.createReader(
+        new StringReader(timecardJson)
+      ).readObject();
+      Timecard tc = bl.updateTimecard(
+        json.getString("company"),
+        json.getInt("timecard_id"),
+        json.getInt("emp_id"),
+        Timestamp.valueOf(json.getString("start_time")),
+        Timestamp.valueOf(json.getString("end_time"))
+      );
+      JsonObjectBuilder tcJson = Json.createObjectBuilder()
+        .add("timecard_id", tc.getId())
+        .add("start_time", tc.getStartTime().toString())
+        .add("end_time", tc.getEndTime().toString())
+        .add("emp_id", tc.getEmpId());
+      job.add("success", tcJson);
+      return Response.status(Response.Status.OK).entity(job.build()).build();
+    } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
   @DELETE
   @Path("timecard")
   @Produces(MediaType.APPLICATION_JSON)
