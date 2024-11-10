@@ -14,7 +14,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
@@ -40,14 +39,14 @@ public class MyResource {
   }
 
   @DELETE
-  @Path("company/{companyName}")
+  @Path("company")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteCompany(@PathParam("companyName") String companyName) {
+  public Response deleteCompany(@QueryParam("companyName") String companyName) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder job = Json.createObjectBuilder();
     try {
       bl.deleteCompany(companyName);
-      job.add("success", true);
+      job.add("success", companyName + "'s information deleted.");
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
       job.add("error", e.getMessage());

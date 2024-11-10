@@ -13,12 +13,13 @@ public class BusinessLayer {
     dl = new DataLayer("ctg7866");
   }
 
-  public void deleteCompany(String companyName) {
+  public int deleteCompany(String companyName) {
     try {
-      dl.deleteCompany(companyName);
+      return dl.deleteCompany(companyName);
     } catch (Exception e) {
       System.out.println("Error in deleteCompany: " + e.getMessage());
     }
+    return -1;
   }
 
   public Department getDepartment(String company, int id) {
@@ -63,12 +64,13 @@ public class BusinessLayer {
     return null;
   }
 
-  public void deleteDepartment(String company, int id) {
+  public int deleteDepartment(String company, int id) {
     try {
-      dl.deleteDepartment(company, id);
+      return dl.deleteDepartment(company, id);
     } catch (Exception e) {
       System.out.println("Error in deleteDepartment: " + e.getMessage());
     }
+    return -1;
   }
 
   public List<Department> getAllDepartments(String company) {
