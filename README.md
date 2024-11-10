@@ -49,12 +49,15 @@ The **Timecard Tracker Service** is a RESTful API developed in Java to help comp
 
 4. **Build and Deploy**
    - Use Maven to clean, compile, and package the project.
+     ```bash
+     mvn clean compile package
+     ```
    - Deploy the generated WAR file to Wildfly.
    - Access the service at:
      ```
      http://127.0.0.1:8080/<your-war-name>/webapi/CompanyServices
      ```
-   - Ensure the response `"got it"` is received.
+   - Ensure the response `"Got it!"` is received from the root endpoint.
 
 5. **Implement the Service**
    - Define endpoints in `MyResource.java` using `@Path`, `@Produces`, `@Consumes`, etc.
@@ -77,7 +80,7 @@ The Service Layer exposes various endpoints to manage companies, departments, em
 ### Base URL Example
 
 ```
-http://localhost:8080/FrenchBP2/webapi/CompanyServices/
+http://localhost:8080/<your-war-name>/webapi/CompanyServices/
 ```
 
 ---
@@ -404,7 +407,7 @@ import companydata.*;
 DataLayer dl = null;
 
 try {
-     dl = new DataLayer("yourusername");
+     dl = new DataLayer("yourRITusername");
      // Call desired DataLayer methods
 } catch (Exception e) {
     // Handle exceptions
@@ -423,7 +426,7 @@ info:
   title: Timecard Tracker API
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/FrenchBP2/webapi/CompanyServices
+  - url: http://localhost:8080/<your-war-name>/webapi/CompanyServices
 paths:
   /company:
     delete:
@@ -435,7 +438,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name (e.g., company=companyName)
+          description: Your RIT username as the company name
       responses:
         '200':
           description: Company data deleted successfully
@@ -446,7 +449,7 @@ paths:
                 properties:
                   success:
                     type: string
-                    example: "companyName's information deleted."
+                    example: "ctg7866's information deleted."
         '400':
           description: Error occurred while deleting company data
           content:
@@ -463,7 +466,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: dept_id
           required: true
@@ -476,9 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Department'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Department'
         '400':
           description: Error occurred while retrieving department
           content:
@@ -495,14 +496,12 @@ paths:
             schema:
               $ref: '#/components/schemas/DepartmentInput'
       responses:
-        '201':
+        '200':
           description: Department created successfully
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessDepartment'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessDepartment'
         '400':
           description: Error occurred while creating department
           content:
@@ -524,9 +523,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessDepartment'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessDepartment'
         '400':
           description: Error occurred while updating department
           content:
@@ -542,7 +539,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: dept_id
           required: true
@@ -572,48 +569,18 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
       responses:
         '200':
           description: List of Departments retrieved successfully
           content:
             application/json:
               schema:
-                oneOf:
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/Department'
-                  - $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
         '400':
           description: Error occurred while retrieving departments
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /employees:
-    get:
-      summary: Get All Employees for a Company
-      description: Returns a list of all Employees for the specified company.
-      parameters:
-        - in: query
-          name: company
-          required: true
-          schema:
-            type: string
-          description: RIT user ID as company name
-      responses:
-        '200':
-          description: List of Employees retrieved successfully
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/Employee'
-                  - $ref: '#/components/schemas/Error'
-        '400':
-          description: Error occurred while retrieving employees
           content:
             application/json:
               schema:
@@ -628,7 +595,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: emp_id
           required: true
@@ -641,9 +608,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Employee'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Employee'
         '400':
           description: Error occurred while retrieving employee
           content:
@@ -660,14 +625,12 @@ paths:
             schema:
               $ref: '#/components/schemas/EmployeeInput'
       responses:
-        '201':
+        '200':
           description: Employee created successfully
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessEmployee'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessEmployee'
         '400':
           description: Error occurred while creating employee
           content:
@@ -689,9 +652,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessEmployee'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessEmployee'
         '400':
           description: Error occurred while updating employee
           content:
@@ -707,7 +668,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: emp_id
           required: true
@@ -720,9 +681,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessMessage'
+                $ref: '#/components/schemas/SuccessMessageEmployee'
         '400':
           description: Error occurred while deleting employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /employees:
+    get:
+      summary: Get All Employees for a Company
+      description: Returns a list of all Employees for the specified company.
+      parameters:
+        - in: query
+          name: company
+          required: true
+          schema:
+            type: string
+          description: Your RIT username as the company name
+      responses:
+        '200':
+          description: List of Employees retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        '400':
+          description: Error occurred while retrieving employees
           content:
             application/json:
               schema:
@@ -737,7 +724,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: timecard_id
           required: true
@@ -750,9 +737,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/TimecardOutput'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/TimecardOutput'
         '400':
           description: Error occurred while retrieving timecard
           content:
@@ -769,14 +754,12 @@ paths:
             schema:
               $ref: '#/components/schemas/TimecardInput'
       responses:
-        '201':
+        '200':
           description: Timecard created successfully
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessTimecard'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessTimecard'
         '400':
           description: Error occurred while creating timecard
           content:
@@ -798,9 +781,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/SuccessTimecard'
-                  - $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/SuccessTimecard'
         '400':
           description: Error occurred while updating timecard
           content:
@@ -816,7 +797,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: timecard_id
           required: true
@@ -829,7 +810,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessMessage'
+                $ref: '#/components/schemas/SuccessMessageTimecard'
         '400':
           description: Error occurred while deleting timecard
           content:
@@ -846,7 +827,7 @@ paths:
           required: true
           schema:
             type: string
-          description: RIT user ID as company name
+          description: Your RIT username as the company name
         - in: query
           name: emp_id
           required: true
@@ -859,11 +840,9 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/Timecard'
-                  - $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Timecard'
         '400':
           description: Error occurred while retrieving timecards
           content:
@@ -880,16 +859,16 @@ components:
           example: 1
         company:
           type: string
-          example: "rituserid"
+          example: "ctg7866"
         dept_name:
           type: string
-          example: "accounting"
+          example: "Accounting"
         dept_no:
           type: string
-          example: "d10"
+          example: "ctg7866_D10"
         location:
           type: string
-          example: "new york"
+          example: "New York"
       required:
         - dept_id
         - company
@@ -901,16 +880,16 @@ components:
       properties:
         company:
           type: string
-          example: "rituserid"
+          example: "ctg7866"
         dept_name:
           type: string
-          example: "mystery"
+          example: "Research"
         dept_no:
           type: string
-          example: "d10"
+          example: "D20"
         location:
           type: string
-          example: "buffalo"
+          example: "Chicago"
       required:
         - company
         - dept_name
@@ -926,7 +905,7 @@ components:
       properties:
         success:
           type: string
-          example: "Department 5 from rituserid deleted."
+          example: "Department 5 from ctg7866 deleted."
     Error:
       type: object
       properties:
@@ -941,24 +920,24 @@ components:
           example: 2
         emp_name:
           type: string
-          example: "jones"
+          example: "Jones"
         emp_no:
           type: string
-          example: "e2"
+          example: "ctg7866_E2"
         hire_date:
           type: string
           format: date
-          example: "1981-04-01"
+          example: "2023-09-01"
         job:
           type: string
-          example: "manager"
+          example: "Manager"
         salary:
           type: number
           format: float
-          example: 2975.0
+          example: 75000.0
         dept_id:
           type: integer
-          example: 2
+          example: 1
         mng_id:
           type: integer
           example: 1
@@ -976,27 +955,27 @@ components:
       properties:
         company:
           type: string
-          example: "yourRITid"
+          example: "ctg7866"
         emp_name:
           type: string
-          example: "french"
+          example: "Smith"
         emp_no:
           type: string
-          example: "rituserid-e1b"
+          example: "E3"
         hire_date:
           type: string
           format: date
-          example: "2018-06-16"
+          example: "2023-10-01"
         job:
           type: string
-          example: "programmer"
+          example: "Developer"
         salary:
           type: number
           format: float
-          example: 5000.0
+          example: 60000.0
         dept_id:
           type: integer
-          example: 1
+          example: 2
         mng_id:
           type: integer
           example: 2
@@ -1014,6 +993,12 @@ components:
       properties:
         success:
           $ref: '#/components/schemas/Employee'
+    SuccessMessageEmployee:
+      type: object
+      properties:
+        success:
+          type: string
+          example: "Employee 3 deleted"
     Timecard:
       type: object
       properties:
@@ -1023,11 +1008,11 @@ components:
         start_time:
           type: string
           format: date-time
-          example: "2018-06-14 11:30:00"
+          example: "2023-10-23 08:00:00"
         end_time:
           type: string
           format: date-time
-          example: "2018-06-14 15:30:00"
+          example: "2023-10-23 16:00:00"
         emp_id:
           type: integer
           example: 2
@@ -1041,18 +1026,18 @@ components:
       properties:
         company:
           type: string
-          example: "yourRITid"
+          example: "ctg7866"
         emp_id:
           type: integer
-          example: 1
+          example: 2
         start_time:
           type: string
           format: date-time
-          example: "2018-06-15 12:30:00"
+          example: "2023-10-24 09:00:00"
         end_time:
           type: string
           format: date-time
-          example: "2018-06-15 15:30:00"
+          example: "2023-10-24 17:00:00"
       required:
         - company
         - emp_id
@@ -1068,6 +1053,12 @@ components:
       properties:
         success:
           $ref: '#/components/schemas/Timecard'
+    SuccessMessageTimecard:
+      type: object
+      properties:
+        success:
+          type: string
+          example: "Timecard 5 deleted"
 ```
 
 ---
@@ -1076,10 +1067,10 @@ components:
 
 1. **Starting Wildfly**
    ```bash
-   cd /Applications/wildfly/bin
-   sudo ./standalone.sh
+   cd $WILDFLY_HOME/bin
+   ./standalone.sh
    ```
-   - Username and password: `student`
+   - Default Wildfly credentials: Use the credentials you set during installation.
 
 2. **Dependencies**
    - Ensure all required JARs are included in `pom.xml`.
@@ -1094,19 +1085,13 @@ components:
      ```java
      Timestamp ts = new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonString).getTime());
      ```
-
-4. **Date Conversions**
-   - **String to Date**
+   - **Parsing Date Strings**
      ```java
-     Date date = new SimpleDateFormat("yyyy-MM-dd").parse(jsonDate);
-     ```
-   - **Date to String**
-     ```java
-     String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(date);
+     Date date = Date.valueOf(jsonDateStr); // For format "yyyy-MM-dd"
      ```
 
-5. **Testing with Postman**
-   - **DELETE Method:** Ensure body is empty and correct query parameters are set.
+4. **Testing with Postman**
+   - **DELETE Method:** Ensure the body is empty and correct query parameters are set.
    - **POST Method:** Use `x-www-form-urlencoded` with necessary fields.
    - **PUT Method:** Set `Content-Type` header to `application/json`.
 
@@ -1116,8 +1101,8 @@ components:
 
 | Criteria                                      | Points |
 |-----------------------------------------------|--------|
-| Correct WEB-INF structure and WAR deployment | 10     |
-| All Routes and Verbs                          | 65     |
+| Correct WEB-INF structure and WAR deployment  | 10     |
+| All Routes and Verbs Implemented Correctly    | 65     |
 | All Validations – Use Business Layer          | 15     |
 | Output Matches Specifications                 | 10     |
 | **Total**                                     | **100**|
@@ -1128,5 +1113,5 @@ components:
 
 Submit the following by the due date:
 
-1. **Project Folder Zip**
-2. **WAR File** named: `YourLastNameYourFirstInitialP2.war`
+1. **Project Folder Zip**: Compress your entire project folder, including all source files.
+2. **WAR File**: Export your project as a WAR file named: `YourLastNameYourFirstInitialP2.war`
