@@ -2,6 +2,7 @@ package com.project.two.business;
 
 import companydata.DataLayer;
 import companydata.Department;
+import companydata.Employee;
 import java.util.List;
 
 public class BusinessLayer {
@@ -72,6 +73,15 @@ public class BusinessLayer {
       return dl.getAllDepartment(company);
     } catch (Exception e) {
       System.out.println("Error in getDepartments: " + e.getMessage());
+    }
+    return null;
+  }
+
+  public List<Employee> getAllEmployees(String company) {
+    try {
+      return dl.getAllEmployee(company);
+    } catch (Exception e) {
+      System.out.println("Error in getEmployees: " + e.getMessage());
     }
     return null;
   }

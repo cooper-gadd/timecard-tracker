@@ -2,6 +2,7 @@ package com.project.two;
 
 import com.project.two.business.BusinessLayer;
 import companydata.Department;
+import companydata.Employee;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -182,6 +183,37 @@ public class MyResource {
       return Response.status(Response.Status.OK)
         .entity(departmentsArray)
         .build();
+    } catch (Exception e) {
+      JsonObjectBuilder job = Json.createObjectBuilder();
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
+  @Path("employees")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getEmployees(@QueryParam("company") String company) {
+    BusinessLayer bl = new BusinessLayer();
+    try {
+      List<Employee> employees = bl.getAllEmployees(company);
+      JsonArrayBuilder jab = Json.createArrayBuilder();
+      for (Employee emp : employees) {
+        JsonObjectBuilder empJson = Json.createObjectBuilder()
+          .add("emp_id", emp.getId())
+          .add("emp_name", emp.getEmpName())
+          .add("emp_no", emp.getEmpNo())
+          .add("hire_date", emp.getHireDate().toString())
+          .add("job", emp.getJob())
+          .add("salary", emp.getSalary())
+          .add("dept_id", emp.getDeptId())
+          .add("mng_id", emp.getMngId());
+        jab.add(empJson);
+      }
+      JsonArray employeesArray = jab.build();
+      return Response.status(Response.Status.OK).entity(employeesArray).build();
     } catch (Exception e) {
       JsonObjectBuilder job = Json.createObjectBuilder();
       job.add("error", e.getMessage());
