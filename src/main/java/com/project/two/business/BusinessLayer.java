@@ -249,4 +249,13 @@ public class BusinessLayer {
     }
     return null;
   }
+
+  public int deleteEmployee(String company, int id) {
+    try {
+      return dl.deleteEmployee(id);
+    } catch (Exception e) {
+      System.out.println("Error in deleteEmployee: " + e.getMessage());
+    }
+    return -1;
+  }
 }
