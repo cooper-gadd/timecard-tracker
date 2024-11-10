@@ -280,26 +280,26 @@ public class MyResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response insertEmployee(
     @FormParam("company") String company,
-    @FormParam("emp_name") String emp_name,
-    @FormParam("emp_no") String emp_no,
-    @FormParam("hire_date") Date hire_date,
+    @FormParam("emp_name") String empName,
+    @FormParam("emp_no") String empNo,
+    @FormParam("hire_date") Date hireDate,
     @FormParam("job") String job,
     @FormParam("salary") double salary,
-    @FormParam("dept_id") int dept_id,
-    @FormParam("mng_id") int mng_id
+    @FormParam("dept_id") int deptId,
+    @FormParam("mng_id") int mngId
   ) {
     BusinessLayer bl = new BusinessLayer();
     JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
     try {
       Employee emp = bl.insertEmployee(
         company,
-        emp_name,
-        emp_no,
-        hire_date,
+        empName,
+        empNo,
+        hireDate,
         job,
         salary,
-        dept_id,
-        mng_id
+        deptId,
+        mngId
       );
       JsonObjectBuilder empJson = Json.createObjectBuilder()
         .add("emp_id", emp.getId())
