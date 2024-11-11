@@ -604,7 +604,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/DepartmentInput'
+              $ref: '#/components/schemas/DepartmentInsert'
       responses:
         '200':
           description: Department created successfully
@@ -626,7 +626,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Department'
+              $ref: '#/components/schemas/DepartmentUpdate'
       responses:
         '200':
           description: Department updated successfully
@@ -662,7 +662,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SuccessMessage'
+                $ref: '#/components/schemas/SuccessMessageDepartment'
         '400':
           description: Error occurred while deleting department
           content:
@@ -733,7 +733,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EmployeeInput'
+              $ref: '#/components/schemas/EmployeeInsert'
       responses:
         '200':
           description: Employee created successfully
@@ -755,7 +755,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Employee'
+              $ref: '#/components/schemas/EmployeeUpdate'
       responses:
         '200':
           description: Employee updated successfully
@@ -847,7 +847,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TimecardOutput'
+                $ref: '#/components/schemas/Timecard'
         '400':
           description: Error occurred while retrieving timecard
           content:
@@ -862,7 +862,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TimecardInput'
+              $ref: '#/components/schemas/TimecardInsert'
       responses:
         '200':
           description: Timecard created successfully
@@ -884,7 +884,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Timecard'
+              $ref: '#/components/schemas/TimecardUpdate'
       responses:
         '200':
           description: Timecard updated successfully
@@ -961,6 +961,23 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "An appropriate error message."
+    SuccessDepartment:
+      type: object
+      properties:
+        success:
+          $ref: '#/components/schemas/Department'
+    SuccessMessageDepartment:
+      type: object
+      properties:
+        success:
+          type: string
+          example: "Department 5 from ctg7866 deleted."
     Department:
       type: object
       properties:
@@ -985,7 +1002,7 @@ components:
         - dept_name
         - dept_no
         - location
-    DepartmentInput:
+    DepartmentInsert:
       type: object
       properties:
         company:
@@ -1005,52 +1022,70 @@ components:
         - dept_name
         - dept_no
         - location
-    SuccessDepartment:
+    DepartmentUpdate:
+      type: object
+      properties:
+        company:
+          type: string
+          example: "ctg7866"
+        dept_id:
+          type: integer
+          example: 5
+        dept_name:
+          type: string
+          example: "Research"
+        dept_no:
+          type: string
+          example: "D20"
+        location:
+          type: string
+          example: "Chicago"
+      required:
+        - company
+        - dept_id
+        - dept_name
+        - dept_no
+        - location
+    SuccessEmployee:
       type: object
       properties:
         success:
-          $ref: '#/components/schemas/Department'
-    SuccessMessage:
+          $ref: '#/components/schemas/Employee'
+    SuccessMessageEmployee:
       type: object
       properties:
         success:
           type: string
-          example: "Department 5 from ctg7866 deleted."
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          example: "An appropriate error message."
+          example: "Employee 3 deleted"
     Employee:
       type: object
       properties:
         emp_id:
           type: integer
-          example: 2
+          example: 15
         emp_name:
           type: string
-          example: "Jones"
+          example: "French"
         emp_no:
           type: string
-          example: "ctg7866_E2"
+          example: "ctg7866-E1B"
         hire_date:
           type: string
           format: date
-          example: "2023-09-01"
+          example: "2018-06-16"
         job:
           type: string
-          example: "Manager"
+          example: "Programmer"
         salary:
           type: number
           format: float
-          example: 75000.0
+          example: 6000.0
         dept_id:
           type: integer
           example: 1
         mng_id:
           type: integer
-          example: 1
+          example: 2
       required:
         - emp_id
         - emp_name
@@ -1060,7 +1095,7 @@ components:
         - salary
         - dept_id
         - mng_id
-    EmployeeInput:
+    EmployeeInsert:
       type: object
       properties:
         company:
@@ -1098,40 +1133,7 @@ components:
         - salary
         - dept_id
         - mng_id
-    SuccessEmployee:
-      type: object
-      properties:
-        success:
-          $ref: '#/components/schemas/Employee'
-    SuccessMessageEmployee:
-      type: object
-      properties:
-        success:
-          type: string
-          example: "Employee 3 deleted"
-    Timecard:
-      type: object
-      properties:
-        timecard_id:
-          type: integer
-          example: 1
-        start_time:
-          type: string
-          format: date-time
-          example: "2023-10-23 08:00:00"
-        end_time:
-          type: string
-          format: date-time
-          example: "2023-10-23 16:00:00"
-        emp_id:
-          type: integer
-          example: 2
-      required:
-        - timecard_id
-        - start_time
-        - end_time
-        - emp_id
-    TimecardInput:
+    EmployeeUpdate:
       type: object
       properties:
         company:
@@ -1139,25 +1141,40 @@ components:
           example: "ctg7866"
         emp_id:
           type: integer
+          example: 15
+        emp_name:
+          type: string
+          example: "French"
+        emp_no:
+          type: string
+          example: "ctg7866-E1B"
+        hire_date:
+          type: string
+          format: date
+          example: "2018-06-16"
+        job:
+          type: string
+          example: "Programmer"
+        salary:
+          type: number
+          format: float
+          example: 6000.0
+        dept_id:
+          type: integer
+          example: 1
+        mng_id:
+          type: integer
           example: 2
-        start_time:
-          type: string
-          format: date-time
-          example: "2023-10-24 09:00:00"
-        end_time:
-          type: string
-          format: date-time
-          example: "2023-10-24 17:00:00"
       required:
         - company
         - emp_id
-        - start_time
-        - end_time
-    TimecardOutput:
-      type: object
-      properties:
-        timecard:
-          $ref: '#/components/schemas/Timecard'
+        - emp_name
+        - emp_no
+        - hire_date
+        - job
+        - salary
+        - dept_id
+        - mng_id
     SuccessTimecard:
       type: object
       properties:
@@ -1169,6 +1186,76 @@ components:
         success:
           type: string
           example: "Timecard 5 deleted"
+    Timecard:
+      type: object
+      properties:
+        timecard_id:
+          type: integer
+          example: 2
+        start_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 11:30:00"
+        end_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 15:30:00"
+        emp_id:
+          type: integer
+          example: 1
+      required:
+        - timecard_id
+        - start_time
+        - end_time
+        - emp_id
+    TimecardInsert:
+      type: object
+      properties:
+        company:
+          type: string
+          example: "ctg7866"
+        emp_id:
+          type: integer
+          example: 1
+        start_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 11:30:00"
+        end_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 15:30:00"
+      required:
+        - company
+        - emp_id
+        - start_time
+        - end_time
+    TimecardUpdate:
+      type: object
+      properties:
+        company:
+          type: string
+          example: "ctg7866"
+        timecard_id:
+          type: integer
+          example: 2
+        start_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 11:30:00"
+        end_time:
+          type: string
+          format: date-time
+          example: "2018-06-14 15:30:00"
+        emp_id:
+          type: integer
+          example: 1
+      required:
+        - company
+        - timecard_id
+        - start_time
+        - end_time
+        - emp_id
 ```
 
 ---
