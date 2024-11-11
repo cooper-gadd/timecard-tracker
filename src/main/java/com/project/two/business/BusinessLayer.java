@@ -303,10 +303,6 @@ public class BusinessLayer {
         currentDate.add(Calendar.DATE, -1);
       }
 
-      if (startDate.before(currentDate)) {
-        return null;
-      }
-
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
       Calendar endDate = Calendar.getInstance();
       endDate.setTime(endTime);
@@ -410,10 +406,6 @@ public class BusinessLayer {
       // or back to the Monday prior to the current date if the current date is not a Monday.
       while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
         currentDate.add(Calendar.DATE, -1);
-      }
-
-      if (startDate.before(currentDate)) {
-        return null;
       }
 
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
