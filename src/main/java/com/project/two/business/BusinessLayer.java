@@ -70,10 +70,14 @@ public class BusinessLayer {
       }
 
       // dept_id must be an existing record number for a department
-      if (dl.getDepartment(company, id) == null) {
+      Department dept = dl.getDepartment(company, id);
+      if (dept == null) {
         return null;
       }
-      Department dept = new Department(id, company, deptName, deptNo, location);
+
+      dept.setDeptName(deptName);
+      dept.setDeptNo(deptNo);
+      dept.setLocation(location);
       dl.updateDepartment(dept);
       return dept;
     } catch (Exception e) {
@@ -230,20 +234,19 @@ public class BusinessLayer {
       }
 
       // emp_id must be a valid record id in the database
-      if (dl.getEmployee(empId) == null) {
+      Employee emp = dl.getEmployee(empId);
+
+      if (emp == null) {
         return null;
       }
 
-      Employee emp = new Employee(
-        empId,
-        empName,
-        empNo,
-        hireDate,
-        job,
-        salary,
-        deptId,
-        mngId
-      );
+      emp.setEmpName(empName);
+      emp.setEmpNo(empNo);
+      emp.setHireDate(hireDate);
+      emp.setJob(job);
+      emp.setSalary(salary);
+      emp.setDeptId(deptId);
+      emp.setMngId(mngId);
       dl.updateEmployee(emp);
       return emp;
     } catch (Exception e) {
@@ -488,11 +491,14 @@ public class BusinessLayer {
       }
 
       // timecard_id must be a valid record id in the database
-      if (dl.getTimecard(timecardId) == null) {
+      Timecard tc = dl.getTimecard(timecardId);
+      if (tc == null) {
         return null;
       }
 
-      Timecard tc = new Timecard(timecardId, startTime, endTime, empId);
+      tc.setStartTime(startTime);
+      tc.setEndTime(endTime);
+      tc.setEmpId(empId);
       dl.updateTimecard(tc);
       return tc;
     } catch (Exception e) {
