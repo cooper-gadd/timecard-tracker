@@ -48,8 +48,8 @@ public class BusinessLayer {
       }
 
       Department dept = new Department(company, deptName, deptNo, location);
-      dl.insertDepartment(dept);
-      return dept;
+
+      return dl.insertDepartment(dept);
     } catch (Exception e) {
       System.out.println("Error in insertDepartment: " + e.getMessage());
     }
@@ -78,8 +78,8 @@ public class BusinessLayer {
       dept.setDeptName(deptName);
       dept.setDeptNo(deptNo);
       dept.setLocation(location);
-      dl.updateDepartment(dept);
-      return dept;
+
+      return dl.updateDepartment(dept);
     } catch (Exception e) {
       System.out.println("Error in updateDepartment: " + e.getMessage());
     }
@@ -166,8 +166,8 @@ public class BusinessLayer {
         deptId,
         mngId
       );
-      dl.insertEmployee(emp);
-      return emp;
+
+      return dl.insertEmployee(emp);
     } catch (Exception e) {
       System.out.println("Error in insertEmployee: " + e.getMessage());
     }
@@ -237,8 +237,8 @@ public class BusinessLayer {
       emp.setSalary(salary);
       emp.setDeptId(deptId);
       emp.setMngId(mngId);
-      dl.updateEmployee(emp);
-      return emp;
+
+      return dl.updateEmployee(emp);
     } catch (Exception e) {
       System.out.println("Error in updateEmployee: " + e.getMessage());
     }
@@ -372,8 +372,8 @@ public class BusinessLayer {
       }
 
       Timecard tc = new Timecard(startTime, endTime, empId);
-      dl.insertTimecard(tc);
-      return tc;
+
+      return dl.insertTimecard(tc);
     } catch (Exception e) {
       System.out.println("Error in insertTimecard: " + e.getMessage());
     }
@@ -489,8 +489,8 @@ public class BusinessLayer {
       tc.setStartTime(startTime);
       tc.setEndTime(endTime);
       tc.setEmpId(empId);
-      dl.updateTimecard(tc);
-      return tc;
+
+      return dl.updateTimecard(tc);
     } catch (Exception e) {
       System.out.println("Error in updateTimecard: " + e.getMessage());
     }
