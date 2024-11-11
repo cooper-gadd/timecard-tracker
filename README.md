@@ -8,7 +8,15 @@
     - [Description](#description)
     - [Root Path](#root-path)
     - [Base URL Example](#base-url-example)
-4. [Data Layer Documentation](#data-layer-documentation)
+4. [Business Layer](#business-layer)
+    - [Description](#description-1)
+    - [Validations](#validations)
+        - [General Validation](#general-validation)
+        - [Company Operations](#company-operations)
+        - [Department Operations](#department-operations)
+        - [Employee Operations](#employee-operations)
+        - [Timecard Operations](#timecard-operations)
+5. [Data Layer Documentation](#data-layer-documentation)
     - [Description](#description-1)
     - [Table Structure](#table-structure)
     - [Models](#models)
@@ -19,10 +27,10 @@
         - [Timecard Operations](#timecard-operations)
         - [Connection Management](#connection-management)
     - [Usage Example](#usage-example)
-5. [OpenAPI Specification](#openapi-specification)
-6. [Hints](#hints)
-7. [Rubric](#rubric)
-8. [Deliverables](#deliverables)
+6. [OpenAPI Specification](#openapi-specification)
+7. [Hints](#hints)
+8. [Rubric](#rubric)
+9. [Deliverables](#deliverables)
 
 ---
 
@@ -69,7 +77,7 @@ The **Timecard Tracker Service** is a RESTful API developed in Java to help comp
 
 ### Description
 
-The Service Layer exposes various endpoints to manage companies, departments, employees, and timecards. All responses are in JSON format, and appropriate validations are enforced to maintain data consistency. This layer interacts with the Data Layer to perform CRUD operations and handle business logic.
+The **Service Layer** exposes various endpoints to manage companies, departments, employees, and timecards. All responses are in JSON format, and appropriate validations are enforced to maintain data consistency. This layer interacts with the **Business Layer** to perform validations and uses the **Data Layer** to perform CRUD operations.
 
 ### Root Path
 
@@ -85,11 +93,113 @@ http://localhost:8080/<your-war-name>/webapi/CompanyServices/
 
 ---
 
+## Business Layer
+
+### Description
+
+The **Business Layer** enforces all business rules and validations required by the application. It acts as an intermediary between the **Service Layer** and the **Data Layer**, ensuring that only valid data is processed and persisted. This layer helps maintain data integrity and enforces constraints beyond basic data types and formats.
+
+### Validations
+
+#### General Validation
+
+- **Data Types and Sizes**: All inputs are validated against the expected data types and sizes as per the database schema.
+- **Company Name**: The `company` parameter must match your RIT username in all operations.
+
+#### Company Operations
+
+- **Delete Company** (`DELETE /company`)
+  - Validates that the company name matches your RIT username.
+  - Confirms that the company exists before attempting deletion.
+
+#### Department Operations
+
+- **Create Department** (`POST /department`)
+  - **Unique `dept_no`**: The `dept_no` must be unique across all companies.
+    - *Suggestion*: Include your RIT username as part of `dept_no` to ensure uniqueness.
+  - **Company Name**: Must match your RIT username.
+
+- **Update Department** (`PUT /department`)
+  - **Existing `dept_id`**: The `dept_id` must correspond to an existing department in your company.
+  - **Unique `dept_no`**: The updated `dept_no` must remain unique across all companies.
+    - *Suggestion*: Include your RIT username as part of `dept_no` to ensure uniqueness.
+  - **Company Name**: Must match your RIT username.
+
+- **Delete Department** (`DELETE /department`)
+  - Validates that the `dept_id` exists and belongs to your company.
+  - Ensures that deleting the department does not violate any foreign key constraints with employees.
+
+- **Get Department** (`GET /department`)
+  - Validates that the `dept_id` exists and belongs to your company.
+
+- **Get All Departments** (`GET /departments`)
+  - Ensures that only departments belonging to your company are returned.
+
+#### Employee Operations
+
+- **Create Employee** (`POST /employee`)
+  - **Company Name**: Must match your RIT username.
+  - **Existing `dept_id`**: The `dept_id` must correspond to an existing department in your company.
+  - **Valid `mng_id`**:
+    - Must be the `emp_id` of an existing employee in your company.
+    - Use `0` if the employee does not have a manager.
+  - **Valid `hire_date`**:
+    - Must be a valid date not in the future.
+    - Must be a weekday (Monday to Friday).
+  - **Unique `emp_no`**: The `emp_no` must be unique across all employees in the database.
+    - *Suggestion*: Include your RIT username in `emp_no` to ensure uniqueness.
+
+- **Update Employee** (`PUT /employee`)
+  - **Existing `emp_id`**: The `emp_id` must correspond to an existing employee in your company.
+  - **Validations from Create Employee**: All validations from the create operation apply.
+
+- **Delete Employee** (`DELETE /employee`)
+  - Validates that the `emp_id` exists and belongs to your company.
+  - Ensures that deleting the employee does not violate any foreign key constraints with timecards.
+
+- **Get Employee** (`GET /employee`)
+  - Validates that the `emp_id` exists and belongs to your company.
+
+- **Get All Employees** (`GET /employees`)
+  - Ensures that only employees belonging to your company are returned.
+
+#### Timecard Operations
+
+- **Create Timecard** (`POST /timecard`)
+  - **Company Name**: Must match your RIT username.
+  - **Existing `emp_id`**: The `emp_id` must correspond to an existing employee in your company.
+  - **Valid `start_time`**:
+    - Must be a valid date and time not in the future.
+    - Must be after the most recent past Monday if the current day is not Monday.
+    - Must be on a weekday (Monday to Friday).
+    - Must be between `08:00:00` and `18:00:00` inclusive.
+    - Must not overlap with any existing timecard's `start_time` for the same employee.
+  - **Valid `end_time`**:
+    - Must be at least one hour greater than `start_time`.
+    - Must be on the same day as `start_time`.
+    - Must be between `08:00:00` and `18:00:00` inclusive.
+
+- **Update Timecard** (`PUT /timecard`)
+  - **Existing `timecard_id`**: The `timecard_id` must correspond to an existing timecard for your company's employee.
+  - **Validations from Create Timecard**: All validations from the create operation apply.
+
+- **Delete Timecard** (`DELETE /timecard`)
+  - Validates that the `timecard_id` exists and belongs to an employee in your company.
+
+- **Get Timecard** (`GET /timecard`)
+  - Validates that the `timecard_id` exists and belongs to an employee in your company.
+
+- **Get All Timecards** (`GET /timecards`)
+  - Validates that the `emp_id` exists and belongs to your company.
+  - Ensures that only timecards belonging to the specified employee are returned.
+
+---
+
 ## Data Layer Documentation
 
 ### Description
 
-The **companydata** Data Layer provides methods to interact with the underlying database, handling CRUD operations for companies, departments, employees, and timecards. It ensures database constraints are respected and manages connections efficiently.
+The **Data Layer** provides methods to interact with the underlying database, handling CRUD operations for companies, departments, employees, and timecards. It ensures database constraints are respected and manages connections efficiently.
 
 ### Table Structure
 
