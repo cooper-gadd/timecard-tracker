@@ -295,12 +295,10 @@ public class BusinessLayer {
       startDate.setTime(startTime);
 
       if (startDate.after(currentDate)) {
-        return null;
-      }
-
-      // or back to the Monday prior to the current date if the current date is not a Monday.
-      while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-        currentDate.add(Calendar.DATE, -1);
+        // or back to the Monday prior to the current date if the current date is not a Monday.
+        while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+          currentDate.add(Calendar.DATE, -1);
+        }
       }
 
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
@@ -400,12 +398,10 @@ public class BusinessLayer {
       startDate.setTime(startTime);
 
       if (startDate.after(currentDate)) {
-        return null;
-      }
-
-      // or back to the Monday prior to the current date if the current date is not a Monday.
-      while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-        currentDate.add(Calendar.DATE, -1);
+        // or back to the Monday prior to the current date if the current date is not a Monday.
+        while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+          currentDate.add(Calendar.DATE, -1);
+        }
       }
 
       // end_time must be a valid date and time at least 1 hour greater than the start_time and be on the same day as the start_time.
