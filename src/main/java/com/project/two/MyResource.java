@@ -213,37 +213,6 @@ public class MyResource {
   }
 
   @GET
-  @Path("employees")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getEmployees(@QueryParam("company") String company) {
-    BusinessLayer bl = new BusinessLayer();
-    try {
-      List<Employee> employees = bl.getAllEmployees(company);
-      JsonArrayBuilder jab = Json.createArrayBuilder();
-      for (Employee emp : employees) {
-        JsonObjectBuilder empJson = Json.createObjectBuilder()
-          .add("emp_id", emp.getId())
-          .add("emp_name", emp.getEmpName())
-          .add("emp_no", emp.getEmpNo())
-          .add("hire_date", emp.getHireDate().toString())
-          .add("job", emp.getJob())
-          .add("salary", emp.getSalary())
-          .add("dept_id", emp.getDeptId())
-          .add("mng_id", emp.getMngId());
-        jab.add(empJson);
-      }
-      JsonArray employeesArray = jab.build();
-      return Response.status(Response.Status.OK).entity(employeesArray).build();
-    } catch (Exception e) {
-      JsonObjectBuilder job = Json.createObjectBuilder();
-      job.add("error", e.getMessage());
-      return Response.status(Response.Status.BAD_REQUEST)
-        .entity(job.build())
-        .build();
-    }
-  }
-
-  @GET
   @Path("employee")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getEmployee(
@@ -385,6 +354,37 @@ public class MyResource {
   }
 
   @GET
+  @Path("employees")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getEmployees(@QueryParam("company") String company) {
+    BusinessLayer bl = new BusinessLayer();
+    try {
+      List<Employee> employees = bl.getAllEmployees(company);
+      JsonArrayBuilder jab = Json.createArrayBuilder();
+      for (Employee emp : employees) {
+        JsonObjectBuilder empJson = Json.createObjectBuilder()
+          .add("emp_id", emp.getId())
+          .add("emp_name", emp.getEmpName())
+          .add("emp_no", emp.getEmpNo())
+          .add("hire_date", emp.getHireDate().toString())
+          .add("job", emp.getJob())
+          .add("salary", emp.getSalary())
+          .add("dept_id", emp.getDeptId())
+          .add("mng_id", emp.getMngId());
+        jab.add(empJson);
+      }
+      JsonArray employeesArray = jab.build();
+      return Response.status(Response.Status.OK).entity(employeesArray).build();
+    } catch (Exception e) {
+      JsonObjectBuilder job = Json.createObjectBuilder();
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
   @Path("timecard")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getTimecard(
@@ -406,37 +406,6 @@ public class MyResource {
         .entity(responseJson.build())
         .build();
     } catch (Exception e) {
-      job.add("error", e.getMessage());
-      return Response.status(Response.Status.BAD_REQUEST)
-        .entity(job.build())
-        .build();
-    }
-  }
-
-  @GET
-  @Path("timecards")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getTimecards(
-    @QueryParam("company") String company,
-    @QueryParam("emp_id") int empId
-  ) {
-    BusinessLayer bl = new BusinessLayer();
-    try {
-      List<Timecard> timecards = bl.getAllTimecards(company, empId);
-      JsonArrayBuilder timecardsJson = Json.createArrayBuilder();
-      for (Timecard tc : timecards) {
-        JsonObjectBuilder tcJson = Json.createObjectBuilder()
-          .add("timecard_id", tc.getId())
-          .add("start_time", tc.getStartTime().toString())
-          .add("end_time", tc.getEndTime().toString())
-          .add("emp_id", tc.getEmpId());
-        timecardsJson.add(tcJson);
-      }
-      return Response.status(Response.Status.OK)
-        .entity(timecardsJson.build())
-        .build();
-    } catch (Exception e) {
-      JsonObjectBuilder job = Json.createObjectBuilder();
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())
@@ -525,6 +494,37 @@ public class MyResource {
       job.add("success", "Timecard " + timecardId + " deleted");
       return Response.status(Response.Status.OK).entity(job.build()).build();
     } catch (Exception e) {
+      job.add("error", e.getMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+        .entity(job.build())
+        .build();
+    }
+  }
+
+  @GET
+  @Path("timecards")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getTimecards(
+    @QueryParam("company") String company,
+    @QueryParam("emp_id") int empId
+  ) {
+    BusinessLayer bl = new BusinessLayer();
+    try {
+      List<Timecard> timecards = bl.getAllTimecards(company, empId);
+      JsonArrayBuilder timecardsJson = Json.createArrayBuilder();
+      for (Timecard tc : timecards) {
+        JsonObjectBuilder tcJson = Json.createObjectBuilder()
+          .add("timecard_id", tc.getId())
+          .add("start_time", tc.getStartTime().toString())
+          .add("end_time", tc.getEndTime().toString())
+          .add("emp_id", tc.getEmpId());
+        timecardsJson.add(tcJson);
+      }
+      return Response.status(Response.Status.OK)
+        .entity(timecardsJson.build())
+        .build();
+    } catch (Exception e) {
+      JsonObjectBuilder job = Json.createObjectBuilder();
       job.add("error", e.getMessage());
       return Response.status(Response.Status.BAD_REQUEST)
         .entity(job.build())

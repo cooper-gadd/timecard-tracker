@@ -104,15 +104,6 @@ public class BusinessLayer {
     return null;
   }
 
-  public List<Employee> getAllEmployees(String company) {
-    try {
-      return dl.getAllEmployee(company);
-    } catch (Exception e) {
-      System.out.println("Error in getEmployees: " + e.getMessage());
-    }
-    return null;
-  }
-
   public Employee getEmployee(String company, int id) {
     try {
       return dl.getEmployee(id);
@@ -264,20 +255,20 @@ public class BusinessLayer {
     return -1;
   }
 
+  public List<Employee> getAllEmployees(String company) {
+    try {
+      return dl.getAllEmployee(company);
+    } catch (Exception e) {
+      System.out.println("Error in getEmployees: " + e.getMessage());
+    }
+    return null;
+  }
+
   public Timecard getTimecard(String company, int id) {
     try {
       return dl.getTimecard(id);
     } catch (Exception e) {
       System.out.println("Error in getTimecard: " + e.getMessage());
-    }
-    return null;
-  }
-
-  public List<Timecard> getAllTimecards(String company, int empId) {
-    try {
-      return dl.getAllTimecard(empId);
-    } catch (Exception e) {
-      System.out.println("Error in getTimecards: " + e.getMessage());
     }
     return null;
   }
@@ -514,5 +505,14 @@ public class BusinessLayer {
       System.out.println("Error in deleteTimecard: " + e.getMessage());
     }
     return -1;
+  }
+
+  public List<Timecard> getAllTimecards(String company, int empId) {
+    try {
+      return dl.getAllTimecard(empId);
+    } catch (Exception e) {
+      System.out.println("Error in getTimecards: " + e.getMessage());
+    }
+    return null;
   }
 }
