@@ -1264,10 +1264,10 @@ components:
 
 1. **Starting Wildfly**
    ```bash
-   cd $WILDFLY_HOME/bin
-   ./standalone.sh
+   cd /Applications/wildfly/bin
+   sudo ./standalone.sh
    ```
-   - Default Wildfly credentials: Use the credentials you set during installation.
+   - Default Wildfly credentials: `student` / `student`
 
 2. **Dependencies**
    - Ensure all required JARs are included in `pom.xml`.
