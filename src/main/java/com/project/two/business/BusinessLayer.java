@@ -226,7 +226,6 @@ public class BusinessLayer {
 
       // emp_id must be a valid record id in the database
       Employee emp = dl.getEmployee(empId);
-
       if (emp == null) {
         return null;
       }
