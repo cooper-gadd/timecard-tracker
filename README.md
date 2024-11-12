@@ -1254,5 +1254,3 @@ components:
         - end_time
         - emp_id
 ```
-
----
