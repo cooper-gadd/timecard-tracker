@@ -28,9 +28,6 @@
         - [Connection Management](#connection-management)
     - [Usage Example](#usage-example)
 6. [OpenAPI Specification](#openapi-specification)
-7. [Hints](#hints)
-8. [Rubric](#rubric)
-9. [Deliverables](#deliverables)
 
 ---
 
@@ -1259,56 +1256,3 @@ components:
 ```
 
 ---
-
-## Hints
-
-1. **Starting Wildfly**
-   ```bash
-   cd /Applications/wildfly/bin
-   sudo ./standalone.sh
-   ```
-   - Default Wildfly credentials: `student` / `student`
-
-2. **Dependencies**
-   - Ensure all required JARs are included in `pom.xml`.
-
-3. **Date and Time Conversions**
-   - **Timestamp to String**
-     ```java
-     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-     String str = df.format(timestamp);
-     ```
-   - **String to Timestamp**
-     ```java
-     Timestamp ts = new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonString).getTime());
-     ```
-   - **Parsing Date Strings**
-     ```java
-     Date date = Date.valueOf(jsonDateStr); // For format "yyyy-MM-dd"
-     ```
-
-4. **Testing with Postman**
-   - **DELETE Method:** Ensure the body is empty and correct query parameters are set.
-   - **POST Method:** Use `x-www-form-urlencoded` with necessary fields.
-   - **PUT Method:** Set `Content-Type` header to `application/json`.
-
----
-
-## Rubric
-
-| Criteria                                      | Points |
-|-----------------------------------------------|--------|
-| Correct WEB-INF structure and WAR deployment  | 10     |
-| All Routes and Verbs Implemented Correctly    | 65     |
-| All Validations – Use Business Layer          | 15     |
-| Output Matches Specifications                 | 10     |
-| **Total**                                     | **100**|
-
----
-
-## Deliverables
-
-Submit the following by the due date:
-
-1. **Project Folder Zip**: Compress your entire project folder, including all source files.
-2. **WAR File**: Export your project as a WAR file named: `YourLastNameYourFirstInitialP2.war`
