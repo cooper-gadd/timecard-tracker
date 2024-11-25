@@ -14,7 +14,7 @@ app.get("/", async function (_req, res) {
 
 app.delete("/company", async function (req, res) {
   try {
-    dl.deleteCompany(req.query.company);
+    await dl.deleteCompany(req.query.company);
     res.status(200).send({ success: "Company data deleted successfully" });
   } catch (error) {
     res.status(400).send({
@@ -124,12 +124,12 @@ app.post("/exployee", async function (req, res) {
     }
 
     // dept_id must exist as a Department in your company
-    if (!dl.getDepartment(req.body.company, req.body.dept_id)) {
+    if (!(await dl.getDepartment(req.body.company, req.body.dept_id))) {
       throw new Error("Department not found");
     }
 
     // mng_id must be the record id of an existing Employee in your company. Use 0 if the first employee or any other employee that doesn’t have a manager.
-    if (!dl.getEmployee(req.body.mng_id) && req.body.mng_id !== 0) {
+    if (!(await dl.getEmployee(req.body.mng_id)) && req.body.mng_id !== 0) {
       throw new Error("Manager not found");
     }
 
@@ -174,12 +174,12 @@ app.put("/exployee", async function (req, res) {
     }
 
     // dept_id must exist as a Department in your company
-    if (!dl.getDepartment(req.body.company, req.body.dept_id)) {
+    if (!(await dl.getDepartment(req.body.company, req.body.dept_id))) {
       throw new Error("Department not found");
     }
 
     // mng_id must be the record id of an existing Employee in your company. Use 0 if the first employee or any other employee that doesn’t have a manager.
-    if (!dl.getEmployee(req.body.mng_id) && req.body.mng_id !== 0) {
+    if (!(await dl.getEmployee(req.body.mng_id)) && req.body.mng_id !== 0) {
       throw new Error("Manager not found");
     }
 
@@ -197,7 +197,7 @@ app.put("/exployee", async function (req, res) {
     }
 
     // emp_id must be a valid record id in the database
-    if (!dl.getEmployee(req.body.emp_id)) {
+    if (!(await dl.getEmployee(req.body.emp_id))) {
       throw new Error("Employee not found");
     }
 
@@ -215,6 +215,16 @@ app.put("/exployee", async function (req, res) {
       ),
     );
     res.status(200).send({ success: employee });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.delete("/employee", async function (req, res) {
+  try {
+    await dl.deleteEmployee(req.query.company, req.query.emp_id);
   } catch (error) {
     res.status(400).send({
       error: error.message,
