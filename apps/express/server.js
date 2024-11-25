@@ -5,6 +5,7 @@ import {
   deleteCompany,
   getDepartment,
   insertDepartment,
+  updateDepartment,
 } from "./business-layer.js";
 
 const dl = new DataLayer("ctg7866");
@@ -59,20 +60,12 @@ app.post(root + "/department", async function (req, res) {
 
 app.put(root + "/department", async function (req, res) {
   try {
-    // dept_id must be an existing record number for a department
-    if (!dl.getDepartment(req.body.company, req.body.dept_id)) {
-      throw new Error("Department not found");
-    }
-
-    const department = await dl.updateDepartment(
-      new dl.Department(
-        req.body.dept_id,
-        req.body.company,
-        req.body.dept_name,
-        // dept_no must be unique among all companies, Suggestion: include company name as part of id
-        req.body.dept_no + "_" + req.body.company,
-        req.body.location,
-      ),
+    const department = await updateDepartment(
+      req.body.dept_id,
+      req.body.company,
+      req.body.dept_name,
+      req.body.dept_no,
+      req.body.location,
     );
     res.status(200).send({ success: department });
   } catch (error) {

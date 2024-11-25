@@ -20,3 +20,27 @@ export async function insertDepartment(company, dept_name, dept_no, location) {
     ),
   );
 }
+
+export async function updateDepartment(
+  dept_id,
+  company,
+  dept_name,
+  dept_no,
+  location,
+) {
+  // dept_id must be an existing record number for a department
+  if (!dl.getDepartment(company, dept_id)) {
+    throw new Error("Department not found");
+  }
+
+  return await dl.updateDepartment(
+    new dl.Department(
+      dept_id,
+      company,
+      dept_name,
+      // dept_no must be unique among all companies, Suggestion: include company name as part of id
+      dept_no + "_" + company,
+      location,
+    ),
+  );
+}
