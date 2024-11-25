@@ -39,8 +39,32 @@ app.get("/department", async function (req, res) {
 
 app.post("/department", async function (req, res) {
   try {
-    const department = await dl.addDepartment(
+    const department = await dl.insertDepartment(
       new dl.Department(
+        req.body.company,
+        req.body.dept_name,
+        // dept_no must be unique among all companies, Suggestion: include company name as part of id
+        req.body.dept_no + "_" + req.body.company,
+        req.body.location,
+      ),
+    );
+    res.status(200).send(department);
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.put("/department", async function (req, res) {
+  try {
+    if (!dl.getDepartment(req.body.company, req.body.id)) {
+      throw new Error("Department not found");
+    }
+
+    const department = await dl.updateDepartment(
+      new dl.Department(
+        req.body.id,
         req.body.company,
         req.body.dept_name,
         // dept_no must be unique among all companies, Suggestion: include company name as part of id
