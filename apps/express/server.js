@@ -423,5 +423,18 @@ app.put("/timecard", async function (req, res) {
   }
 });
 
+app.delete("/timecard", async function (req, res) {
+  try {
+    await dl.deleteTimecard(req.query.timecard_id);
+    res.status(200).send({
+      success: `Timecard ${req.query.timecard_id} deleted`,
+    });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(8282);
 console.log("API is running on http://localhost:8282");
