@@ -166,3 +166,7 @@ export async function updateEmployee(
     ),
   );
 }
+
+export async function deleteEmployee(company, emp_id) {
+  return await dl.deleteEmployee(company, emp_id);
+}

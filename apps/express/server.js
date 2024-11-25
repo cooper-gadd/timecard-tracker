@@ -3,6 +3,7 @@ import logger from "morgan";
 import {
   deleteCompany,
   deleteDepartment,
+  deleteEmployee,
   getDepartment,
   getDepartments,
   getEmployee,
@@ -157,7 +158,7 @@ app.put(root + "/exployee", async function (req, res) {
 
 app.delete(root + "/employee", async function (req, res) {
   try {
-    await dl.deleteEmployee(req.query.company, req.query.emp_id);
+    await deleteEmployee(req.query.company, req.query.emp_id);
     res.status(200).send({
       success: `Employee ${req.query.emp_id} deleted`,
     });
