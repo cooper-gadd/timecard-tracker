@@ -44,3 +44,7 @@ export async function updateDepartment(
     ),
   );
 }
+
+export async function deleteDepartment(company, dept_id) {
+  return await dl.deleteDepartment(company, dept_id);
+}

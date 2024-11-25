@@ -1,12 +1,13 @@
 import express, { json } from "express";
-import DataLayer from "./companydata/index.js";
 import logger from "morgan";
 import {
   deleteCompany,
+  deleteDepartment,
   getDepartment,
   insertDepartment,
   updateDepartment,
 } from "./business-layer.js";
+import DataLayer from "./companydata/index.js";
 
 const dl = new DataLayer("ctg7866");
 const root = "/CompanyServices";
@@ -77,7 +78,7 @@ app.put(root + "/department", async function (req, res) {
 
 app.delete(root + "/department", async function (req, res) {
   try {
-    await dl.deleteDepartment(req.query.company, req.query.dept_id);
+    await deleteDepartment(req.query.company, req.query.dept_id);
     res.status(200).send({
       success: `Department ${req.query.dept_id} from ${req.query.company} deleted successfully`,
     });
