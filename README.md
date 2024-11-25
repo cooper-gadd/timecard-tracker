@@ -30,7 +30,7 @@
 
 ## Overview
 
-The **Timecard Tracker Service** is a RESTful API developed in Java to help companies track employee timecards. It leverages a provided **Data Layer** for database interactions and includes comprehensive validation within the **Business Layer**. The service supports operations on companies, departments, employees, and timecards, ensuring data integrity and adherence to business rules.
+The **Timecard Tracker Service** is a RESTful API developed to help companies track employee timecards. It leverages a provided **Data Layer** for database interactions and includes comprehensive validation within the **Business Layer**. The service supports operations on companies, departments, employees, and timecards, ensuring data integrity and adherence to business rules.
 
 ---
 
