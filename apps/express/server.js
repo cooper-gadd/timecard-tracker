@@ -48,7 +48,7 @@ app.post("/department", async function (req, res) {
         req.body.location,
       ),
     );
-    res.status(200).send(department);
+    res.status(200).send({ success: department });
   } catch (error) {
     res.status(400).send({
       error: error.message,
@@ -83,11 +83,9 @@ app.put("/department", async function (req, res) {
 app.delete("/department", async function (req, res) {
   try {
     await dl.deleteDepartment(req.query.company, req.query.department);
-    res
-      .status(200)
-      .send(
-        `Department ${req.query.department} from ${req.query.company} deleted successfully`,
-      );
+    res.status(200).send({
+      success: `Department ${req.query.department} from ${req.query.company} deleted successfully`,
+    });
   } catch (error) {
     res.status(400).send({
       error: error.message,
