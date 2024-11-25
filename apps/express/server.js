@@ -1,10 +1,9 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
 import logger from "morgan";
-import e from "express";
 
 const dl = new DataLayer("ctg7866");
-const app = express();
+app.use(express.urlencoded({ extended: true }));
 
 app.use(logger("dev"));
 app.use(json());
@@ -31,6 +30,25 @@ app.get("/department", async function (req, res) {
       req.query.department,
     );
     res.send(200).send(department);
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.post("/department", async function (req, res) {
+  try {
+    const department = await dl.addDepartment(
+      new dl.Department(
+        req.body.company,
+        req.body.dept_name,
+        // dept_no must be unique among all companies, Suggestion: include company name as part of id
+        req.body.dept_no + "_" + req.body.company,
+        req.body.location,
+      ),
+    );
+    res.status(200).send(department);
   } catch (error) {
     res.status(400).send({
       error: error.message,
