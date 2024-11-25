@@ -1,7 +1,7 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
 import logger from "morgan";
-import { deleteCompany } from "./business-layer.js";
+import { deleteCompany, getDepartment } from "./business-layer.js";
 
 const dl = new DataLayer("ctg7866");
 const root = "/CompanyServices";
@@ -28,10 +28,7 @@ app.delete(root + "/company", async function (req, res) {
 
 app.get(root + "/department", async function (req, res) {
   try {
-    const department = await dl.getDepartment(
-      req.query.company,
-      req.query.dept_id,
-    );
+    const department = await getDepartment(req.body.company, req.body.dept_id);
     res.send(200).send(department);
   } catch (error) {
     res.status(400).send({
