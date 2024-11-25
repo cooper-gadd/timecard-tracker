@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
 import logger from "morgan";
+import e from "express";
 
 const dl = new DataLayer("ctg7866");
 const app = express();
@@ -16,6 +17,20 @@ app.delete("/company", async function (req, res) {
   try {
     dl.deleteCompany(req.query.company);
     res.status(200).send("Company data deleted successfully");
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.get("/department", async function (req, res) {
+  try {
+    const department = await dl.getDepartment(
+      req.query.company,
+      req.query.department,
+    );
+    res.send(200).send(department);
   } catch (error) {
     res.status(400).send({
       error: error.message,
