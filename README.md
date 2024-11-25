@@ -3,12 +3,11 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Getting Started](#getting-started)
-3. [Service Layer](#service-layer)
+2. [Service Layer](#service-layer)
     - [Description](#description)
     - [Root Path](#root-path)
     - [Base URL Example](#base-url-example)
-4. [Business Layer](#business-layer)
+3. [Business Layer](#business-layer)
     - [Description](#description-1)
     - [Validations](#validations)
         - [General Validation](#general-validation)
@@ -16,7 +15,7 @@
         - [Department Operations](#department-operations)
         - [Employee Operations](#employee-operations)
         - [Timecard Operations](#timecard-operations)
-5. [Data Layer Documentation](#data-layer-documentation)
+4. [Data Layer Documentation](#data-layer-documentation)
     - [Description](#description-1)
     - [Table Structure](#table-structure)
     - [Models](#models)
@@ -27,46 +26,13 @@
         - [Timecard Operations](#timecard-operations)
         - [Connection Management](#connection-management)
     - [Usage Example](#usage-example)
-6. [OpenAPI Specification](#openapi-specification)
+5. [OpenAPI Specification](#openapi-specification)
 
 ---
 
 ## Overview
 
 The **Timecard Tracker Service** is a RESTful API developed in Java to help companies track employee timecards. It leverages a provided **Data Layer** for database interactions and includes comprehensive validation within the **Business Layer**. The service supports operations on companies, departments, employees, and timecards, ensuring data integrity and adherence to business rules.
-
----
-
-## Getting Started
-
-1. **Accept the Assignment**
-   - Use the invite link provided on myCourses to accept the assignment.
-   - Refresh the page to access starter files.
-
-2. **Clone the Repository**
-   ```bash
-   cd ~/Developer
-   git clone <repository-url>
-   ```
-
-3. **Configure the Project**
-   - Update `pom.xml` to match your Java SDK version.
-
-4. **Build and Deploy**
-   - Use Maven to clean, compile, and package the project.
-     ```bash
-     mvn clean compile package
-     ```
-   - Deploy the generated WAR file to Wildfly.
-   - Access the service at:
-     ```
-     http://127.0.0.1:8080/<your-war-name>/webapi/CompanyServices
-     ```
-   - Ensure the response `"Got it!"` is received from the root endpoint.
-
-5. **Implement the Service**
-   - Define endpoints in `MyResource.java` using `@Path`, `@Produces`, `@Consumes`, etc.
-   - Complete the Service and Business Layers as per the specifications.
 
 ---
 
