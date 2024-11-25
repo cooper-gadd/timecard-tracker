@@ -1,21 +1,20 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
-var dl = new DataLayer("ritusername");
-//now use dl.Department, dl.Employee and dl.TimeCard
 import logger from "morgan";
 
-var app = express();
+const dl = new DataLayer("ctg7866");
+const app = express();
 
 app.use(logger("dev"));
 app.use(json());
 
-//use router if you'd like
-
-//use appropriate routes/paths/verbs
-app.get("/", async function (req, res) {
-  //call the appropriate dl methods/objects using
-  //await as the data layer methods are asynchronous
+app.get("/", async function (_req, res) {
   res.json({ response: "this is the appropriate response" });
+});
+
+app.get("/departments", async function (req, res) {
+  const departments = await dl.getAllDepartment(req.query.company);
+  res.send(departments);
 });
 
 app.listen(8282);
