@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
 import logger from "morgan";
+import { deleteCompany } from "./business-layer.js";
 
 const dl = new DataLayer("ctg7866");
 const root = "/CompanyServices";
@@ -16,7 +17,7 @@ app.get(root + "/", async function (_req, res) {
 
 app.delete(root + "/company", async function (req, res) {
   try {
-    await dl.deleteCompany(req.query.company);
+    await deleteCompany(req.query.company);
     res.status(200).send({ success: "Company data deleted successfully" });
   } catch (error) {
     res.status(400).send({
