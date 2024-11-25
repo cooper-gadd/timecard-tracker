@@ -312,7 +312,7 @@ app.post("/timecard", async function (req, res) {
     }
 
     // start_time must not be on the same day as any other start_time for that employee.
-    const timecards = await dl.getTimecardsForEmployee(req.body.emp_id);
+    const timecards = await dl.getAllTimecard(req.body.emp_id);
     for (const timecard of timecards) {
       if (
         new Date(req.body.start_time).getDate() ===
@@ -391,7 +391,7 @@ app.put("/timecard", async function (req, res) {
     }
 
     // start_time must not be on the same day as any other start_time for that employee.
-    const timecards = await dl.getTimecardsForEmployee(req.body.emp_id);
+    const timecards = await dl.getAllTimecard(req.body.emp_id);
     for (const timecard of timecards) {
       if (
         new Date(req.body.start_time).getDate() ===
@@ -429,6 +429,17 @@ app.delete("/timecard", async function (req, res) {
     res.status(200).send({
       success: `Timecard ${req.query.timecard_id} deleted`,
     });
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.get("/timecards", async function (req, res) {
+  try {
+    const timecards = await dl.getAllTimecards(req.query.emp_id);
+    res.status(200).send(timecards);
   } catch (error) {
     res.status(400).send({
       error: error.message,
