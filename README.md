@@ -6,7 +6,6 @@
 2. [Service Layer](#service-layer)
     - [Description](#description)
     - [Root Path](#root-path)
-    - [Base URL Example](#base-url-example)
 3. [Business Layer](#business-layer)
     - [Description](#description-1)
     - [Validations](#validations)
@@ -24,7 +23,6 @@
         - [Department Operations](#department-operations)
         - [Employee Operations](#employee-operations)
         - [Timecard Operations](#timecard-operations)
-        - [Connection Management](#connection-management)
     - [Usage Example](#usage-example)
 5. [OpenAPI Specification](#openapi-specification)
 
@@ -46,12 +44,6 @@ The **Service Layer** exposes various endpoints to manage companies, departments
 
 ```
 /CompanyServices
-```
-
-### Base URL Example
-
-```
-http://localhost:8080/<your-war-name>/webapi/CompanyServices/
 ```
 
 ---
@@ -462,34 +454,6 @@ All methods in the Data Layer throw an exception if there is an error, such as t
 
   **Throws:**
   - `Exception`: If an error occurs or the timecard does not exist.
-
-#### Connection Management
-
-- **`void close()`**
-
-  Closes the current data layer connection.
-
-  **Throws:**
-  - `Exception`: If an error occurs while closing the connection.
-
-### Usage Example
-
-```java
-import companydata.*;
-
-DataLayer dl = null;
-
-try {
-     dl = new DataLayer("yourRITusername");
-     // Call desired DataLayer methods
-} catch (Exception e) {
-    // Handle exceptions
-} finally {
-     dl.close();
-}
-```
-
----
 
 ## OpenAPI Specification
 
