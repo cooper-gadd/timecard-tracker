@@ -27,7 +27,7 @@ app.get("/department", async function (req, res) {
   try {
     const department = await dl.getDepartment(
       req.query.company,
-      req.query.department,
+      req.query.dept_id,
     );
     res.send(200).send(department);
   } catch (error) {
@@ -58,13 +58,13 @@ app.post("/department", async function (req, res) {
 
 app.put("/department", async function (req, res) {
   try {
-    if (!dl.getDepartment(req.body.company, req.body.id)) {
+    if (!dl.getDepartment(req.body.company, req.body.dept_id)) {
       throw new Error("Department not found");
     }
 
     const department = await dl.updateDepartment(
       new dl.Department(
-        req.body.id,
+        req.body.dept_id,
         req.body.company,
         req.body.dept_name,
         // dept_no must be unique among all companies, Suggestion: include company name as part of id
@@ -82,9 +82,9 @@ app.put("/department", async function (req, res) {
 
 app.delete("/department", async function (req, res) {
   try {
-    await dl.deleteDepartment(req.query.company, req.query.department);
+    await dl.deleteDepartment(req.query.company, req.query.dept_id);
     res.status(200).send({
-      success: `Department ${req.query.department} from ${req.query.company} deleted successfully`,
+      success: `Department ${req.query.dept_id} from ${req.query.company} deleted successfully`,
     });
   } catch (error) {
     res.status(400).send({
@@ -97,6 +97,17 @@ app.get("/departments", async function (req, res) {
   try {
     const departments = await dl.getAllDepartment(req.query.company);
     res.status(200).send(departments);
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
+app.get("/employee", async function (req, res) {
+  try {
+    const employee = await dl.getEmployee(req.query.company, req.query.emp_id);
+    res.send(200).send(employee);
   } catch (error) {
     res.status(400).send({
       error: error.message,
