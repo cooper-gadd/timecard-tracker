@@ -246,5 +246,19 @@ app.get("/employees", async function (req, res) {
   }
 });
 
+app.get("/timecard", async function (req, res) {
+  try {
+    const timecard = await dl.getTimecard(
+      req.query.company,
+      req.query.timecard_id,
+    );
+    res.status(200).send(timecard);
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(8282);
 console.log("API is running on http://localhost:8282");
