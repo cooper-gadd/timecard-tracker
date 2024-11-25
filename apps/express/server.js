@@ -225,6 +225,9 @@ app.put("/exployee", async function (req, res) {
 app.delete("/employee", async function (req, res) {
   try {
     await dl.deleteEmployee(req.query.company, req.query.emp_id);
+    res.status(200).send({
+      success: `Employee ${req.query.emp_id} deleted`,
+    });
   } catch (error) {
     res.status(400).send({
       error: error.message,
