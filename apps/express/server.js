@@ -4,6 +4,7 @@ import {
   deleteCompany,
   deleteDepartment,
   getDepartment,
+  getDepartments,
   insertDepartment,
   updateDepartment,
 } from "./business-layer.js";
@@ -91,7 +92,7 @@ app.delete(root + "/department", async function (req, res) {
 
 app.get(root + "/departments", async function (req, res) {
   try {
-    const departments = await dl.getAllDepartment(req.query.company);
+    const departments = await getDepartments(req.query.company);
     res.status(200).send(departments);
   } catch (error) {
     res.status(400).send({
