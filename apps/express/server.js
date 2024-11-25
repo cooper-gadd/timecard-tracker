@@ -80,6 +80,21 @@ app.put("/department", async function (req, res) {
   }
 });
 
+app.delete("/department", async function (req, res) {
+  try {
+    await dl.deleteDepartment(req.query.company, req.query.department);
+    res
+      .status(200)
+      .send(
+        `Department ${req.query.department} from ${req.query.company} deleted successfully`,
+      );
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
 app.get("/departments", async function (req, res) {
   try {
     const departments = await dl.getAllDepartment(req.query.company);
