@@ -52,3 +52,7 @@ export async function deleteDepartment(company, dept_id) {
 export async function getDepartments(company) {
   return await dl.getAllDepartment(company);
 }
+
+export async function getEmployee(company, emp_id) {
+  return await dl.getEmployee(company, emp_id);
+}

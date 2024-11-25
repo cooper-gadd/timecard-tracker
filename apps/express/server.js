@@ -5,6 +5,7 @@ import {
   deleteDepartment,
   getDepartment,
   getDepartments,
+  getEmployee,
   insertDepartment,
   updateDepartment,
 } from "./business-layer.js";
@@ -103,7 +104,7 @@ app.get(root + "/departments", async function (req, res) {
 
 app.get(root + "/employee", async function (req, res) {
   try {
-    const employee = await dl.getEmployee(req.query.emp_id);
+    const employee = await getEmployee(req.query.emp_id);
     res.send(200).send(employee);
   } catch (error) {
     res.status(400).send({
