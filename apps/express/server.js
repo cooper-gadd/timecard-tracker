@@ -7,6 +7,7 @@ import {
   getDepartment,
   getDepartments,
   getEmployee,
+  getEmployees,
   insertDepartment,
   insertEmployee,
   updateDepartment,
@@ -171,7 +172,7 @@ app.delete(root + "/employee", async function (req, res) {
 
 app.get(root + "/employees", async function (req, res) {
   try {
-    const employees = await dl.getAllEmployees(req.query.company);
+    const employees = await getEmployees(req.query.company);
     res.status(200).send(employees);
   } catch (error) {
     res.status(400).send({

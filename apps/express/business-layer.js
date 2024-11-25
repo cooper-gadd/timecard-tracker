@@ -170,3 +170,7 @@ export async function updateEmployee(
 export async function deleteEmployee(company, emp_id) {
   return await dl.deleteEmployee(company, emp_id);
 }
+
+export async function getEmployees(company) {
+  return await dl.getAllEmployee(company);
+}
