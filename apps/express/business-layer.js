@@ -239,7 +239,7 @@ export async function insertTimecard(company, emp_id, start_time, end_time) {
   }
 
   return await dl.insertTimecard(
-    new dl.timecard(new Date(start_time), new Date(end_time), req.body.emp_id),
+    new dl.timecard(new Date(start_time), new Date(end_time), emp_id),
   );
 }
 
@@ -317,11 +317,15 @@ export async function updateTimecard(
       timecard_id,
       new Date(start_time),
       new Date(end_time),
-      req.body.emp_id,
+      emp_id,
     ),
   );
 }
 
 export async function deleteTimecard(timecard_id) {
   await dl.deleteTimecard(timecard_id);
+}
+
+export async function getTimecards(emp_id) {
+  return await dl.getAllTimecard(emp_id);
 }

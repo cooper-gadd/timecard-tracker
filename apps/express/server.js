@@ -10,14 +10,13 @@ import {
   getEmployee,
   getEmployees,
   getTimecard,
+  getTimecards,
   insertDepartment,
   insertEmployee,
   insertTimecard,
   updateDepartment,
 } from "./business-layer.js";
-import DataLayer from "./companydata/index.js";
 
-const dl = new DataLayer("ctg7866");
 const root = "/CompanyServices";
 const app = express();
 
@@ -248,7 +247,7 @@ app.delete(root + "/timecard", async function (req, res) {
 
 app.get(root + "/timecards", async function (req, res) {
   try {
-    const timecards = await dl.getAllTimecards(req.query.emp_id);
+    const timecards = await getTimecards(req.query.emp_id);
     res.status(200).send(timecards);
   } catch (error) {
     res.status(400).send({
