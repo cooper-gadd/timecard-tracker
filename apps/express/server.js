@@ -3,16 +3,18 @@ import DataLayer from "./companydata/index.js";
 import logger from "morgan";
 
 const dl = new DataLayer("ctg7866");
-app.use(express.urlencoded({ extended: true }));
+const root = "/CompanyServices";
+const app = express();
 
+app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 app.use(json());
 
-app.get("/", async function (_req, res) {
+app.get(root + "/", async function (_req, res) {
   res.json({ response: "this is the appropriate response" });
 });
 
-app.delete("/company", async function (req, res) {
+app.delete(root + "/company", async function (req, res) {
   try {
     await dl.deleteCompany(req.query.company);
     res.status(200).send({ success: "Company data deleted successfully" });
@@ -23,7 +25,7 @@ app.delete("/company", async function (req, res) {
   }
 });
 
-app.get("/department", async function (req, res) {
+app.get(root + "/department", async function (req, res) {
   try {
     const department = await dl.getDepartment(
       req.query.company,
@@ -37,7 +39,7 @@ app.get("/department", async function (req, res) {
   }
 });
 
-app.post("/department", async function (req, res) {
+app.post(root + "/department", async function (req, res) {
   try {
     const department = await dl.insertDepartment(
       new dl.Department(
@@ -56,7 +58,7 @@ app.post("/department", async function (req, res) {
   }
 });
 
-app.put("/department", async function (req, res) {
+app.put(root + "/department", async function (req, res) {
   try {
     // dept_id must be an existing record number for a department
     if (!dl.getDepartment(req.body.company, req.body.dept_id)) {
@@ -81,7 +83,7 @@ app.put("/department", async function (req, res) {
   }
 });
 
-app.delete("/department", async function (req, res) {
+app.delete(root + "/department", async function (req, res) {
   try {
     await dl.deleteDepartment(req.query.company, req.query.dept_id);
     res.status(200).send({
@@ -94,7 +96,7 @@ app.delete("/department", async function (req, res) {
   }
 });
 
-app.get("/departments", async function (req, res) {
+app.get(root + "/departments", async function (req, res) {
   try {
     const departments = await dl.getAllDepartment(req.query.company);
     res.status(200).send(departments);
@@ -105,7 +107,7 @@ app.get("/departments", async function (req, res) {
   }
 });
 
-app.get("/employee", async function (req, res) {
+app.get(root + "/employee", async function (req, res) {
   try {
     const employee = await dl.getEmployee(req.query.emp_id);
     res.send(200).send(employee);
@@ -116,7 +118,7 @@ app.get("/employee", async function (req, res) {
   }
 });
 
-app.post("/exployee", async function (req, res) {
+app.post(root + "/exployee", async function (req, res) {
   try {
     // company – must be your RIT username
     if (req.body.company !== "ctg7866") {
@@ -166,7 +168,7 @@ app.post("/exployee", async function (req, res) {
   }
 });
 
-app.put("/exployee", async function (req, res) {
+app.put(root + "/exployee", async function (req, res) {
   try {
     // company – must be your RIT username
     if (req.body.company !== "ctg7866") {
@@ -222,7 +224,7 @@ app.put("/exployee", async function (req, res) {
   }
 });
 
-app.delete("/employee", async function (req, res) {
+app.delete(root + "/employee", async function (req, res) {
   try {
     await dl.deleteEmployee(req.query.company, req.query.emp_id);
     res.status(200).send({
@@ -235,7 +237,7 @@ app.delete("/employee", async function (req, res) {
   }
 });
 
-app.get("/employees", async function (req, res) {
+app.get(root + "/employees", async function (req, res) {
   try {
     const employees = await dl.getAllEmployees(req.query.company);
     res.status(200).send(employees);
@@ -246,7 +248,7 @@ app.get("/employees", async function (req, res) {
   }
 });
 
-app.get("/timecard", async function (req, res) {
+app.get(root + "/timecard", async function (req, res) {
   try {
     const timecard = await dl.getTimecard(
       req.query.company,
@@ -260,7 +262,7 @@ app.get("/timecard", async function (req, res) {
   }
 });
 
-app.post("/timecard", async function (req, res) {
+app.post(root + "/timecard", async function (req, res) {
   try {
     // company must be your RIT id
     if (req.body.company !== "ctg7866") {
@@ -339,7 +341,7 @@ app.post("/timecard", async function (req, res) {
   }
 });
 
-app.put("/timecard", async function (req, res) {
+app.put(root + "/timecard", async function (req, res) {
   try {
     // company must be your RIT id
     if (req.body.company !== "ctg7866") {
@@ -423,7 +425,7 @@ app.put("/timecard", async function (req, res) {
   }
 });
 
-app.delete("/timecard", async function (req, res) {
+app.delete(root + "/timecard", async function (req, res) {
   try {
     await dl.deleteTimecard(req.query.timecard_id);
     res.status(200).send({
@@ -436,7 +438,7 @@ app.delete("/timecard", async function (req, res) {
   }
 });
 
-app.get("/timecards", async function (req, res) {
+app.get(root + "/timecards", async function (req, res) {
   try {
     const timecards = await dl.getAllTimecards(req.query.emp_id);
     res.status(200).send(timecards);
