@@ -4,6 +4,7 @@ import {
   deleteCompany,
   deleteDepartment,
   deleteEmployee,
+  deleteTimecard,
   getDepartment,
   getDepartments,
   getEmployee,
@@ -234,7 +235,7 @@ app.put(root + "/timecard", async function (req, res) {
 
 app.delete(root + "/timecard", async function (req, res) {
   try {
-    await dl.deleteTimecard(req.query.timecard_id);
+    await deleteTimecard(req.query.timecard_id);
     res.status(200).send({
       success: `Timecard ${req.query.timecard_id} deleted`,
     });

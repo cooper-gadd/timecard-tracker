@@ -321,3 +321,7 @@ export async function updateTimecard(
     ),
   );
 }
+
+export async function deleteTimecard(timecard_id) {
+  await dl.deleteTimecard(timecard_id);
+}
