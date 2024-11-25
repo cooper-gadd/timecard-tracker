@@ -235,5 +235,16 @@ app.delete("/employee", async function (req, res) {
   }
 });
 
+app.get("/employees", async function (req, res) {
+  try {
+    const employees = await dl.getAllEmployees(req.query.company);
+    res.status(200).send(employees);
+  } catch (error) {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+});
+
 app.listen(8282);
 console.log("API is running on http://localhost:8282");
