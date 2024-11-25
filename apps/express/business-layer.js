@@ -174,3 +174,7 @@ export async function deleteEmployee(company, emp_id) {
 export async function getEmployees(company) {
   return await dl.getAllEmployee(company);
 }
+
+export async function getTimecard(company, timecard_id) {
+  return await dl.getTimecard(company, timecard_id);
+}

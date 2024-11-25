@@ -8,6 +8,7 @@ import {
   getDepartments,
   getEmployee,
   getEmployees,
+  getTimecard,
   insertDepartment,
   insertEmployee,
   updateDepartment,
@@ -183,7 +184,7 @@ app.get(root + "/employees", async function (req, res) {
 
 app.get(root + "/timecard", async function (req, res) {
   try {
-    const timecard = await dl.getTimecard(
+    const timecard = await getTimecard(
       req.query.company,
       req.query.timecard_id,
     );
