@@ -1,7 +1,11 @@
 import express, { json } from "express";
 import DataLayer from "./companydata/index.js";
 import logger from "morgan";
-import { deleteCompany, getDepartment } from "./business-layer.js";
+import {
+  deleteCompany,
+  getDepartment,
+  insertDepartment,
+} from "./business-layer.js";
 
 const dl = new DataLayer("ctg7866");
 const root = "/CompanyServices";
@@ -39,14 +43,11 @@ app.get(root + "/department", async function (req, res) {
 
 app.post(root + "/department", async function (req, res) {
   try {
-    const department = await dl.insertDepartment(
-      new dl.Department(
-        req.body.company,
-        req.body.dept_name,
-        // dept_no must be unique among all companies, Suggestion: include company name as part of id
-        req.body.dept_no + "_" + req.body.company,
-        req.body.location,
-      ),
+    const department = await insertDepartment(
+      req.body.company,
+      req.body.dept_name,
+      req.body.dept_no,
+      req.body.location,
     );
     res.status(200).send({ success: department });
   } catch (error) {
