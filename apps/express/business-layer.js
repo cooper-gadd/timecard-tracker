@@ -55,7 +55,11 @@ export async function getDepartments(company) {
 }
 
 export async function getEmployee(company, emp_id) {
-  return await dl.getEmployee(company, emp_id);
+  if (company !== "ctg7866") {
+    throw new Error("Company name must be your RIT username");
+  }
+
+  return await dl.getEmployee(emp_id);
 }
 
 export async function insertEmployee(
