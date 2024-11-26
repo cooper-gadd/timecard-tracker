@@ -186,7 +186,11 @@ export async function getEmployees(company) {
 }
 
 export async function getTimecard(company, timecard_id) {
-  return await dl.getTimecard(company, timecard_id);
+  if (company !== "ctg7866") {
+    throw new Error("Company name must be your RIT username");
+  }
+
+  return await dl.getTimecard(timecard_id);
 }
 
 export async function insertTimecard(company, emp_id, start_time, end_time) {
