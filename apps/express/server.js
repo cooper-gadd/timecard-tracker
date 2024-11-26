@@ -75,8 +75,8 @@ app.post(root + "/department", async function (req, res) {
 app.put(root + "/department", async function (req, res) {
   try {
     const department = await updateDepartment(
-      req.body.dept_id,
       req.body.company,
+      req.body.dept_id,
       req.body.dept_name,
       req.body.dept_no,
       req.body.location,

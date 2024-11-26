@@ -15,34 +15,35 @@ export async function insertDepartment(company, dept_name, dept_no, location) {
       company,
       dept_name,
       // dept_no must be unique among all companies, Suggestion: include company name as part of id
-      dept_no + "_" + company,
+      !dept_no.includes(company) ? company + "_" + dept_no : dept_no,
       location,
     ),
   );
 }
 
 export async function updateDepartment(
-  dept_id,
   company,
+  dept_id,
   dept_name,
   dept_no,
   location,
 ) {
   // dept_id must be an existing record number for a department
-  if (!dl.getDepartment(company, dept_id)) {
+  if (!(await dl.getDepartment(company, dept_id))) {
     throw new Error("Department not found");
   }
 
-  return await dl.updateDepartment(
-    new dl.Department(
-      dept_id,
-      company,
-      dept_name,
-      // dept_no must be unique among all companies, Suggestion: include company name as part of id
-      dept_no + "_" + company,
-      location,
-    ),
+  // constructor didn't work for some reason
+  const department = new dl.Department();
+  department.setDeptId(parseInt(dept_id));
+  department.setCompany(company);
+  department.setDeptName(dept_name);
+  department.setDeptNo(
+    !dept_no.includes(company) ? company + "_" + dept_no : dept_no,
   );
+  department.setLocation(location);
+
+  return await dl.updateDepartment(department);
 }
 
 export async function deleteDepartment(company, dept_id) {
