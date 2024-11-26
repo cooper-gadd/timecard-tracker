@@ -15,6 +15,7 @@ import {
   insertEmployee,
   insertTimecard,
   updateDepartment,
+  updateEmployee,
 } from "./business-layer.js";
 
 const root = "/CompanyServices";
@@ -140,7 +141,7 @@ app.post(root + "/employee", async function (req, res) {
 
 app.put(root + "/employee", async function (req, res) {
   try {
-    const employee = await updateDepartment(
+    const employee = await updateEmployee(
       req.body.company,
       req.body.emp_id,
       req.body.emp_name,
