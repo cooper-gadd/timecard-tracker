@@ -158,18 +158,19 @@ export async function updateEmployee(
     throw new Error("Employee not found");
   }
 
-  return await dl.updateEmployee(
-    new dl.Employee(
-      emp_name,
-      // emp_no must be unique among all companies, Suggestion: include company name as part of id
-      emp_no + "_" + company,
-      hire_date,
-      job,
-      salary,
-      dept_id,
-      mng_id,
-    ),
-  );
+  const employee = new dl.Employee();
+  employee.setId(parseInt(emp_id));
+  employee.setEmpName(emp_name);
+  employee.setEmpNo(
+    !emp_no.includes(company) ? company + "_" + emp_no : emp_no,
+  ); // emp_no must be unique among all companies, Suggestion: include company name as part of id
+  employee.setHireDate(hire_date);
+  employee.setJob(job);
+  employee.setSalary(parseFloat(salary));
+  employee.setDeptId(parseInt(dept_id));
+  employee.setMngId(parseInt(mng_id));
+
+  return await dl.updateEmployee(employee);
 }
 
 export async function deleteEmployee(company, emp_id) {
