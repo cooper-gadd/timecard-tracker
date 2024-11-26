@@ -32,7 +32,9 @@ app.get(root + "/", async function (_req, res) {
 app.delete(root + "/company", async function (req, res) {
   try {
     await deleteCompany(req.query.company);
-    res.status(200).send({ success: "Company data deleted successfully" });
+    res
+      .status(200)
+      .send({ success: `${req.query.company} information deleted.` });
   } catch (error) {
     res.status(400).send({
       error: error.message,
