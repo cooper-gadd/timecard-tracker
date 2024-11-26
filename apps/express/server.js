@@ -118,7 +118,7 @@ app.get(root + "/employee", async function (req, res) {
   }
 });
 
-app.post(root + "/exployee", async function (req, res) {
+app.post(root + "/employee", async function (req, res) {
   try {
     const employee = await insertEmployee(
       req.body.company,
@@ -138,7 +138,7 @@ app.post(root + "/exployee", async function (req, res) {
   }
 });
 
-app.put(root + "/exployee", async function (req, res) {
+app.put(root + "/employee", async function (req, res) {
   try {
     const employee = await updateDepartment(
       req.body.company,
