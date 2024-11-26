@@ -25,8 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
 app.use(json());
 
-app.get(root + "/", async function (_req, res) {
-  res.json({ response: "this is the appropriate response" });
+app.get("/", async function (_req, res) {
+  res.json({ response: "navigate to http://localhost:8282/CompanyServices" });
 });
 
 app.delete(root + "/company", async function (req, res) {
