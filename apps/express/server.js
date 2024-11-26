@@ -16,6 +16,7 @@ import {
   insertTimecard,
   updateDepartment,
   updateEmployee,
+  updateTimecard,
 } from "./business-layer.js";
 
 const root = "/CompanyServices";
@@ -224,10 +225,11 @@ app.post(root + "/timecard", async function (req, res) {
 app.put(root + "/timecard", async function (req, res) {
   try {
     const timecard = await updateTimecard(
+      req.body.company,
       req.body.timecard_id,
+      req.body.emp_id,
       req.body.start_time,
       req.body.end_time,
-      req.body.emp_id,
     );
     res.status(200).send({
       success: timecard,

@@ -327,14 +327,10 @@ export async function updateTimecard(
     throw new Error("Timecard not found");
   }
 
-  return await dl.updateTimecard(
-    new dl.timecard(
-      timecard_id,
-      new Date(start_time),
-      new Date(end_time),
-      emp_id,
-    ),
-  );
+  const timecard = new dl.Timecard(start_time, end_time, parseInt(emp_id));
+  timecard.setId(timecard_id);
+
+  return await dl.updateTimecard(timecard);
 }
 
 export async function deleteTimecard(timecard_id) {
