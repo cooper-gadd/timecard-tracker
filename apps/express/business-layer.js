@@ -174,7 +174,11 @@ export async function updateEmployee(
 }
 
 export async function deleteEmployee(company, emp_id) {
-  return await dl.deleteEmployee(company, emp_id);
+  if (company !== "ctg7866") {
+    throw new Error("Company name must be your RIT username");
+  }
+
+  return await dl.deleteEmployee(emp_id);
 }
 
 export async function getEmployees(company) {
