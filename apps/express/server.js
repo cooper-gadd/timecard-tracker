@@ -42,7 +42,10 @@ app.delete(root + "/company", async function (req, res) {
 
 app.get(root + "/department", async function (req, res) {
   try {
-    const department = await getDepartment(req.body.company, req.body.dept_id);
+    const department = await getDepartment(
+      req.query.company,
+      req.query.dept_id,
+    );
     res.send(200).send(department);
   } catch (error) {
     res.status(400).send({
