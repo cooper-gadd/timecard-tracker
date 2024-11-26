@@ -201,6 +201,7 @@ export async function insertTimecard(company, emp_id, start_time, end_time) {
 
   // emp_id must exist as an Employee in your company
   if (!(await dl.getEmployee(emp_id))) {
+    console.log(emp_id);
     throw new Error("Employee not found");
   }
 
@@ -252,9 +253,9 @@ export async function insertTimecard(company, emp_id, start_time, end_time) {
     }
   }
 
-  return await dl.insertTimecard(
-    new dl.timecard(new Date(start_time), new Date(end_time), emp_id),
-  );
+  const timecard = new dl.Timecard(start_time, end_time, parseInt(emp_id));
+
+  return await dl.insertTimecard(timecard);
 }
 
 export async function updateTimecard(

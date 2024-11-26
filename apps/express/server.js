@@ -206,9 +206,10 @@ app.get(root + "/timecard", async function (req, res) {
 app.post(root + "/timecard", async function (req, res) {
   try {
     const timecard = await insertTimecard(
+      req.body.company,
+      req.body.emp_id,
       req.body.start_time,
       req.body.end_time,
-      req.body.emp_id,
     );
     res.status(200).send({
       success: timecard,
